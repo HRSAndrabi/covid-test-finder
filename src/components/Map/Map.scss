@@ -1,0 +1,7 @@
+@import "src/App.scss";
+
+.map-container {
+    min-height: 100vh;
+    flex-grow: 1;
+    background-color: $cp-grey;
+}

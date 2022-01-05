@@ -2,6 +2,7 @@ import "./App.scss";
 import { useState, useEffect } from "react";
 import { fetchVicData } from "./api/VicAPI";
 import SidePanel from "./components/SidePanel/SidePanel";
+import Map from "./components/Map/Map";
 
 function App() {
     const [data, setData] = useState(null);
@@ -16,7 +17,8 @@ function App() {
 
     return (
         <div className="App">
-            <SidePanel></SidePanel>
+            <SidePanel />
+            <Map />
         </div>
     );
 }
