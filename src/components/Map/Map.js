@@ -13,7 +13,7 @@ function Map() {
     useEffect(() => {
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
-            style: "mapbox://styles/hassdaddy3/ckxlo17dgc4s414udisy27lev",
+            style: "mapbox://styles/hassdaddy3/cky26t112263i14p52m7gq2om",
             center: [133.354, -28.141],
             zoom: 4.2,
             maxBounds: [
