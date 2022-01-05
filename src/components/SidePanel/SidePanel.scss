@@ -1,0 +1,60 @@
+@import "src/App.scss";
+
+.desktop-drawer {
+    @include breakpoint-max($lg) {
+        display: none;
+    }
+
+    .MuiPaper-root {
+        min-height: 100vh;
+    }
+    .drawer-inner {
+        min-width: 350px;
+        padding: $s3;
+    }
+}
+
+.MuiDrawer-root {
+    .MuiPaper-root {
+        height: calc(50% - 56px);
+        overflow: visible;
+    }
+}
+
+.mobile-drawer {
+    @include breakpoint-min($lg) {
+        display: none;
+    }
+
+    .drawer-preview {
+        background-color: #fff;
+        position: absolute;
+        top: -56px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        visibility: visible;
+        right: 0;
+        left: 0;
+
+        .handle {
+            width: 30px;
+            height: 6px;
+            background-color: $cp-grey;
+            border-radius: 3px;
+            position: absolute;
+            top: 8px;
+            left: calc(50% - 15px);
+        }
+
+        .drawer-preview__content {
+            padding: $s3;
+        }
+    }
+
+    .drawer-content {
+        height: 100%;
+        overflow: auto;
+        padding: $s3;
+        padding-top: $s4;
+    }
+}
