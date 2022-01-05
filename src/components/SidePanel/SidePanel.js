@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { isDesktop } from "react-device-detect";
-import Drawer from "@mui/material/Drawer";
 import { SwipeableDrawer } from "@mui/material";
 import "./SidePanel.scss";
 
@@ -33,13 +32,9 @@ const SidePanel = () => {
 
     return (
         <>
-            <Drawer
-                className="desktop-drawer"
-                variant="permanent"
-                anchor="left"
-            >
+            <div className="desktop-drawer">
                 <div className="drawer-inner">Hello, I am Drawer.</div>
-            </Drawer>
+            </div>
             <SwipeableDrawer
                 className="mobile-drawer"
                 anchor="bottom"
