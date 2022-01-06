@@ -9,6 +9,7 @@ function App() {
         type: "FeatureCollection",
         features: [],
     });
+    const [renderedFeatures, setRenderedFeatures] = useState();
 
     useEffect(() => {
         fetchVicData().then((data) => {
@@ -16,10 +17,16 @@ function App() {
         });
     }, []);
 
+    const renderedFeaturesChangeHandler = (newRenderedFeatures) => {
+        setRenderedFeatures(newRenderedFeatures);
+    };
+
     return (
         <div className="App">
-            <SidePanel />
-            <Map />
+            <SidePanel renderedFeatures={renderedFeatures} />
+            <Map
+                renderedFeaturesChangeHandler={renderedFeaturesChangeHandler}
+            />
         </div>
     );
 }

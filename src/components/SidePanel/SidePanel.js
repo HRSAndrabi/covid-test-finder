@@ -3,7 +3,7 @@ import { isDesktop } from "react-device-detect";
 import { SwipeableDrawer } from "@mui/material";
 import "./SidePanel.scss";
 
-const SidePanel = () => {
+const SidePanel = (props) => {
     const [open, setOpen] = useState(false);
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
@@ -33,7 +33,7 @@ const SidePanel = () => {
     return (
         <>
             <div className="desktop-drawer">
-                <div className="drawer-inner">Hello, I am Drawer.</div>
+                <div className="drawer-inner">{props.renderedFeatures}</div>
             </div>
             <SwipeableDrawer
                 className="mobile-drawer"
