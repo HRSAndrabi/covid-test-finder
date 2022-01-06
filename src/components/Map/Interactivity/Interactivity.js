@@ -2,12 +2,16 @@ function renderListings(features, map) {
     if (features.length) {
         const testingSiteList = features.map((feature) => {
             return (
-                <li key={feature.properties["Site_Name"]}>
-                    {feature.properties["Site_Name"]}
+                <li className="list-item" key={feature.properties["Site_Name"]}>
+                    <div className="list-item__header">
+                        {feature.properties["Site_Name"]}
+                    </div>
+                    <div className="list-item__body"></div>
+                    <div className="list-item__footer"></div>
                 </li>
             );
         });
-        return <ul>{testingSiteList}</ul>;
+        return <ul className="visible-sites-list">{testingSiteList}</ul>;
     } else if (features.length === 0) {
         return <p>No results found</p>;
     } else {

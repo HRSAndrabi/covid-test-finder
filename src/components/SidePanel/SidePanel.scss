@@ -11,6 +11,19 @@
     .drawer-inner {
         width: 450px;
         padding: $s3;
+
+        .visible-sites-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+
+            .list-item {
+                border-bottom: 2px solid $cp-grey-100;
+                padding: $s2 0;
+                font-weight: 500;
+            }
+        }
     }
 }
 
