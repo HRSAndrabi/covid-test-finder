@@ -9,7 +9,8 @@
 
     .drawer-inner {
         width: 450px;
-        padding: $s3;
+        padding: $s3 0;
+        box-sizing: border-box;
 
         .visible-sites-list {
             list-style: none;
@@ -19,7 +20,7 @@
 
             .list-item {
                 border-bottom: 2px solid $cp-grey-100;
-                padding: $s2 0;
+                padding: $s2 $s8;
 
                 &__header {
                     .site-name {
@@ -28,10 +29,52 @@
                         text-overflow: ellipsis;
                         padding-right: $s4;
                         font-weight: 500;
+                        line-height: 0.8rem;
                     }
-                    .address {
+                    .site-properties {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: $s1;
+                    }
+                    .site-address {
                         font-size: 0.8rem;
                         color: $cp-grey-600;
+                    }
+                }
+
+                &__body {
+                    padding-top: $s2;
+                    .site-hours {
+                        font-size: 0.8rem;
+                        width: 100%;
+                        display: none;
+
+                        .left {
+                            text-align: left;
+                            padding-right: $s8;
+                        }
+
+                        .right {
+                            text-align: right;
+                        }
+                    }
+                    .site-hours--unavailable {
+                        font-size: 0.8rem;
+                        display: none;
+                    }
+                }
+
+                &__footer {
+                    display: flex;
+                    gap: $s2;
+                    a {
+                        text-decoration: none;
+                        font-size: 0.85rem;
+                        color: $cp-grey-600;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: $s1;
                     }
                 }
             }

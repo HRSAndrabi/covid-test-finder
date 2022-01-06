@@ -1,4 +1,4 @@
-// import moment from "moment";
+import moment from "moment";
 
 function cleanKey(key) {
     let cleanedKey = key[0].toLowerCase() + key.slice(1, key.length);
@@ -16,16 +16,67 @@ function cleanKey(key) {
 function cleanValue(value, key) {
     let cleanedValue = value;
     if (typeof value === "string") {
-        cleanedValue = cleanedValue.trim();
+        cleanedValue = cleanedValue.trim().replace("~", "");
     }
     if (key === "SITE_NAME") {
         cleanedValue = value
             .replace("- Drive Through", "")
             .replace("- Walk Through", "")
             .replace("- Appointment only", "")
-            .replace("(Asymptomatic only)", "");
+            .replace("(Asymptomatic only)", "")
+            // .replace(/ *\([^)]*\) */g, "")
+            .replace(/-.*$/, "")
+            .replace("(Star Health", "(Star Health)")
+            .replace("( Cohealth", "(Cohealth)")
+            .replace("ACL", "Australian Clinical Labs (ACL)");
+    } else if (key === "REQUIREMENTS") {
+        cleanedValue = cleanedValue
+            .replace(
+                "GP referral or travel referral required. Appointment required.",
+                "GP or travel referral required"
+            )
+            .replace(
+                "GP referral or travel referral required",
+                "GP or travel referral required"
+            )
+            .replace("GP referral required for asymptomatic testing", "")
+            .replace(".", "")
+            .toLowerCase();
+    } else if (["SERVICE_FORMAT", "AGE_LIMIT"].includes(key)) {
+        cleanedValue = cleanedValue.toLowerCase();
     }
     return cleanedValue;
+}
+
+function checkOpen(feature) {
+    if (
+        !feature.properties["MO_START"] &&
+        !feature.properties["TU_START"] &&
+        !feature.properties["WE_START"] &&
+        !feature.properties["TH_START"] &&
+        !feature.properties["FR_START"] &&
+        !feature.properties["SA_START"] &&
+        !feature.properties["SU_START"]
+    ) {
+        return "unknown";
+    }
+    const currentTime = moment();
+    const dayPrefix = currentTime.format("dd").toUpperCase();
+    const siteOpenTime = moment(
+        currentTime.format("MMMM D YYYY, ") +
+            feature.properties[`${dayPrefix}_START`],
+        "MMMM D YYYY, h:mm A"
+    );
+    const siteEndTime = moment(
+        currentTime.format("MMMM D YYYY, ") +
+            feature.properties[`${dayPrefix}_END`],
+        "MMMM D YYYY, h:mm A"
+    );
+    if (currentTime.isBetween(siteOpenTime, siteEndTime)) {
+        return "open";
+    } else {
+        return "closed";
+    }
 }
 
 export async function fetchVicData() {
@@ -66,6 +117,7 @@ export async function fetchVicData() {
                             : null;
                     }
                 });
+                feature.properties["IS_OPEN"] = checkOpen(feature);
                 output.features.push(feature);
             });
         });
