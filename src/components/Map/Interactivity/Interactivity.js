@@ -4,7 +4,12 @@ function renderListings(features, map) {
             return (
                 <li className="list-item" key={feature.properties["ID"]}>
                     <div className="list-item__header">
-                        {feature.properties["SITE_NAME"]}
+                        <div className="site-name">
+                            {feature.properties["SITE_NAME"]}
+                        </div>
+                        <div className="address">
+                            {`${feature.properties["ADDRESS"]}, ${feature.properties["SUBURB"]}, ${feature.properties["POSTCODE"]}`}
+                        </div>
                     </div>
                     <div className="list-item__body"></div>
                     <div className="list-item__footer"></div>

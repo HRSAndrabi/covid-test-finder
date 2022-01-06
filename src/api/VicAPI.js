@@ -15,6 +15,9 @@ function cleanKey(key) {
 
 function cleanValue(value, key) {
     let cleanedValue = value;
+    if (typeof value === "string") {
+        cleanedValue = cleanedValue.trim();
+    }
     if (key === "SITE_NAME") {
         cleanedValue = value
             .replace("- Drive Through", "")
