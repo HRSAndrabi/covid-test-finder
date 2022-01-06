@@ -63,7 +63,7 @@ function Map(props) {
                     layout: {
                         "icon-image": [
                             "case",
-                            ["==", ["get", "ServiceFormat"], "Walk-in"],
+                            ["==", ["get", "SERVICE_FORMAT"], "Walk-in"],
                             "HaAccountBox",
                             "HaGarage",
                         ],
@@ -74,7 +74,7 @@ function Map(props) {
                     paint: {
                         "icon-color": [
                             "case",
-                            ["==", ["get", "ServiceFormat"], "Walk-in"],
+                            ["==", ["get", "SERVICE_FORMAT"], "Walk-in"],
                             "#2d70ec",
                             "#00bfa5",
                         ],

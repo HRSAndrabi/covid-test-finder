@@ -2,9 +2,9 @@ function renderListings(features, map) {
     if (features.length) {
         const testingSiteList = features.map((feature) => {
             return (
-                <li className="list-item" key={feature.properties["Site_Name"]}>
+                <li className="list-item" key={feature.properties["ID"]}>
                     <div className="list-item__header">
-                        {feature.properties["Site_Name"]}
+                        {feature.properties["SITE_NAME"]}
                     </div>
                     <div className="list-item__body"></div>
                     <div className="list-item__footer"></div>
@@ -16,7 +16,7 @@ function renderListings(features, map) {
         return <p>No results found</p>;
     } else {
         // remove features filter
-        map.current.setFilter("all-vic-testing-sites", ["has", "Active"]);
+        map.current.setFilter("all-vic-testing-sites", ["has", "ACTIVE"]);
         return <p>Drag the map to populate results</p>;
     }
 }
@@ -39,7 +39,7 @@ function getUniqueFeatures(features, comparatorProperty) {
 }
 
 export function moveStartHandler(event, map) {
-    map.current.setFilter("all-vic-testing-sites", ["has", "Active"]);
+    map.current.setFilter("all-vic-testing-sites", ["has", "ACTIVE"]);
 }
 
 export function moveEndHandler(event, map) {
@@ -48,7 +48,7 @@ export function moveEndHandler(event, map) {
     });
 
     if (features) {
-        const uniqueFeatures = getUniqueFeatures(features, "Site_Name");
+        const uniqueFeatures = getUniqueFeatures(features, "SITE_NAME");
         // Populate features for the listing overlay.
         const renderedFeatures = renderListings(uniqueFeatures, map);
 

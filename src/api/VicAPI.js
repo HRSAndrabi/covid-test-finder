@@ -1,5 +1,18 @@
 // import moment from "moment";
 
+function cleanKey(key) {
+    let cleanedKey = key[0].toLowerCase() + key.slice(1, key.length);
+    cleanedKey = cleanedKey.replace("-", "_").replace(",", "").replace(" ", "");
+    cleanedKey = cleanedKey.replace(/(_.)/g, (str) => str.toUpperCase()[1]);
+    cleanedKey = cleanedKey.replace(
+        /[A-Z]/g,
+        (letter) => `_${letter.toLowerCase()}`
+    );
+    cleanedKey = cleanedKey.toUpperCase().replace(" _", "_").replace(" ", "_");
+
+    return cleanedKey;
+}
+
 export async function fetchVicData() {
     const output = {
         type: "FeatureCollection",
@@ -27,14 +40,15 @@ export async function fetchVicData() {
                     },
                 };
                 data.table.cols.forEach((key, idx) => {
-                    if (key.label !== "Latitude" && key.label !== "Longitude") {
-                        feature.properties[key.label] = row.c[idx]
-                            ? row.c[idx].v
-                            : null;
-                    } else {
+                    if (key.label === "Latitude" || key.label === "Longitude") {
                         feature.geometry.coordinates.unshift(
                             row.c[idx] ? row.c[idx].v : null
                         );
+                    } else if (key.label) {
+                        const cleanedKey = cleanKey(key.label);
+                        feature.properties[cleanedKey] = row.c[idx]
+                            ? row.c[idx].v
+                            : null;
                     }
                 });
                 output.features.push(feature);
