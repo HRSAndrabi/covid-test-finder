@@ -13,6 +13,18 @@ function cleanKey(key) {
     return cleanedKey;
 }
 
+function cleanValue(value, key) {
+    let cleanedValue = value;
+    if (key === "SITE_NAME") {
+        cleanedValue = value
+            .replace("- Drive Through", "")
+            .replace("- Walk Through", "")
+            .replace("- Appointment only", "")
+            .replace("(Asymptomatic only)", "");
+    }
+    return cleanedValue;
+}
+
 export async function fetchVicData() {
     const output = {
         type: "FeatureCollection",
@@ -47,7 +59,7 @@ export async function fetchVicData() {
                     } else if (key.label) {
                         const cleanedKey = cleanKey(key.label);
                         feature.properties[cleanedKey] = row.c[idx]
-                            ? row.c[idx].v
+                            ? cleanValue(row.c[idx].v, cleanedKey)
                             : null;
                     }
                 });
