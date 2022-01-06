@@ -5,15 +5,16 @@ import SidePanel from "./components/SidePanel/SidePanel";
 import Map from "./components/Map/Map";
 
 function App() {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({
+        type: "FeatureCollection",
+        features: [],
+    });
 
     useEffect(() => {
         fetchVicData().then((data) => {
             setData(data);
         });
     }, []);
-
-    console.log(data);
 
     return (
         <div className="App">
