@@ -1,69 +1,44 @@
 import { useState } from "react";
-// import { isDesktop } from "react-device-detect";
-import { SwipeableDrawer } from "@mui/material";
 import "./SidePanel.scss";
 import { MdSearch } from "react-icons/md";
 
 const SidePanel = (props) => {
-    const [open, setOpen] = useState(false);
-    const toggleDrawer = (newOpen) => () => {
-        setOpen(newOpen);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const drawerOpenHandler = () => {
+        setDrawerOpen(true);
+        console.log(true);
     };
 
-    // useEffect(() => {
-    //     // Hacky way to open/close the bottom (mobile) drawer when on desktop
-    //     // TODO: Maybe remove Material UI here and do a custom component
-    //     window.addEventListener("click", (event) => {
-    //         const drawerArea = [
-    //             "PrivateSwipeArea-root",
-    //             "drawer-preview",
-    //             "drawer-preview__content",
-    //             "drawer-content",
-    //         ];
-    //         if (
-    //             drawerArea.some((str) => event.target.className.includes(str)) &
-    //             isDesktop
-    //         ) {
-    //             setOpen(true);
-    //         } else {
-    //             setOpen(false);
-    //         }
-    //     });
-    // }, []);
+    const drawerCloseHandler = () => {
+        setDrawerOpen(false);
+        console.log(false);
+    };
 
     return (
         <>
             <div className="desktop-drawer">
                 <div className="drawer-inner">{props.renderedFeatures}</div>
             </div>
-            <SwipeableDrawer
+            <div
                 className="mobile-drawer"
-                anchor="bottom"
-                open={open}
-                onClick={toggleDrawer(true)}
-                onClose={toggleDrawer(false)}
-                onOpen={toggleDrawer(true)}
-                swipeAreaWidth={75}
-                disableSwipeToOpen={false}
-                ModalProps={{
-                    keepMounted: true,
-                }}
+                tabIndex={0}
+                onFocus={drawerOpenHandler}
+                onBlur={drawerCloseHandler}
             >
                 <div className="drawer-preview">
                     <div className="handle"></div>
-                    <div className="drawer-preview__content">
-                        <div className="search">
-                            <MdSearch className="search__icon" />
-                            <input className="search__input" type="text" />
-                        </div>
+                    <div className="search">
+                        <MdSearch className="search__icon" />
+                        <input className="search__input" type="text" />
                     </div>
                 </div>
-                <div className="drawer-content">
-                    <div className="drawer-content-inner">
+                <div className={`drawer-content ${drawerOpen ? "open" : ""}`}>
+                    <div className="drawer-content__inner">
                         {props.renderedFeatures}
                     </div>
                 </div>
-            </SwipeableDrawer>
+            </div>
         </>
     );
 };
