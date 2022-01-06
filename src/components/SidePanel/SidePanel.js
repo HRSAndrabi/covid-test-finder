@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import { isDesktop } from "react-device-detect";
+import { useState } from "react";
+// import { isDesktop } from "react-device-detect";
 import { SwipeableDrawer } from "@mui/material";
 import "./SidePanel.scss";
+import { MdSearch } from "react-icons/md";
 
 const SidePanel = (props) => {
     const [open, setOpen] = useState(false);
@@ -9,26 +10,26 @@ const SidePanel = (props) => {
         setOpen(newOpen);
     };
 
-    useEffect(() => {
-        // Hacky way to open/close the bottom (mobile) drawer when on desktop
-        // TODO: Maybe remove Material UI here and do a custom component
-        window.addEventListener("click", (event) => {
-            const drawerArea = [
-                "PrivateSwipeArea-root",
-                "drawer-preview",
-                "drawer-preview__content",
-                "drawer-content",
-            ];
-            if (
-                drawerArea.some((str) => event.target.className.includes(str)) &
-                isDesktop
-            ) {
-                setOpen(true);
-            } else {
-                setOpen(false);
-            }
-        });
-    }, []);
+    // useEffect(() => {
+    //     // Hacky way to open/close the bottom (mobile) drawer when on desktop
+    //     // TODO: Maybe remove Material UI here and do a custom component
+    //     window.addEventListener("click", (event) => {
+    //         const drawerArea = [
+    //             "PrivateSwipeArea-root",
+    //             "drawer-preview",
+    //             "drawer-preview__content",
+    //             "drawer-content",
+    //         ];
+    //         if (
+    //             drawerArea.some((str) => event.target.className.includes(str)) &
+    //             isDesktop
+    //         ) {
+    //             setOpen(true);
+    //         } else {
+    //             setOpen(false);
+    //         }
+    //     });
+    // }, []);
 
     return (
         <>
@@ -42,7 +43,7 @@ const SidePanel = (props) => {
                 onClick={toggleDrawer(true)}
                 onClose={toggleDrawer(false)}
                 onOpen={toggleDrawer(true)}
-                swipeAreaWidth={56}
+                swipeAreaWidth={75}
                 disableSwipeToOpen={false}
                 ModalProps={{
                     keepMounted: true,
@@ -50,10 +51,17 @@ const SidePanel = (props) => {
             >
                 <div className="drawer-preview">
                     <div className="handle"></div>
-                    <div className="drawer-preview__content">Preview</div>
+                    <div className="drawer-preview__content">
+                        <div className="search">
+                            <MdSearch className="search__icon" />
+                            <input className="search__input" type="text" />
+                        </div>
+                    </div>
                 </div>
                 <div className="drawer-content">
-                    Drawer content with insighful insights.
+                    <div className="drawer-content-inner">
+                        {props.renderedFeatures}
+                    </div>
                 </div>
             </SwipeableDrawer>
         </>
