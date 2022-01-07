@@ -156,7 +156,7 @@
             .site-hours {
                 font-size: 0.8rem;
                 width: 100%;
-                display: none;
+                line-height: 1rem;
 
                 .left {
                     text-align: left;
@@ -169,7 +169,6 @@
             }
             .site-hours--unavailable {
                 font-size: 0.8rem;
-                display: none;
             }
         }
 
@@ -185,6 +184,16 @@
                 justify-content: center;
                 gap: $s1;
             }
+        }
+    }
+
+    .list-item.hidden {
+        display: none;
+    }
+
+    .list-item.collapsed {
+        .list-item__body {
+            display: none;
         }
     }
 }

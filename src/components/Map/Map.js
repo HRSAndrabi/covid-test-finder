@@ -111,24 +111,30 @@ function Map(props) {
                 // Interactivity -------------------------------------------------
                 // ---------------------------------------------------------------
                 const filterEl = document.getElementById("search__input");
-                // let visibleTestingSites = [];
-                let featureObj = initialRender(map, data);
-                let visibleTestingSites = featureObj.uniqueFeatures;
-                props.renderedFeaturesChangeHandler(
-                    featureObj.renderedFeatures
-                );
-                map.current.on("movestart", (event) => {
-                    moveStartHandler(event, map, filterEl);
-                });
-                map.current.on("moveend", (event) => {
+                // Defined sperately because we have to remove this function from
+                // the mouseend event later on
+                function onMoveEnd(event) {
                     if (filterEl.value.length === 0) {
-                        const featureObj = moveEndHandler(map);
+                        const featureObj = moveEndHandler(event, map);
                         visibleTestingSites = featureObj.uniqueFeatures;
                         props.renderedFeaturesChangeHandler(
                             featureObj.renderedFeatures
                         );
                     }
+                }
+
+                // Initally populating testing site list
+                let featureObj = initialRender(map, data);
+                props.renderedFeaturesChangeHandler(
+                    featureObj.renderedFeatures
+                );
+                let visibleTestingSites = featureObj.uniqueFeatures;
+
+                // Event listeners
+                map.current.on("movestart", (event) => {
+                    moveStartHandler(event, map, filterEl);
                 });
+                map.current.on("moveend", onMoveEnd);
                 filterEl.addEventListener("input", (event) => {
                     const featureObj = filterKeyUp(event, map, filterEl, data);
                     visibleTestingSites = featureObj.uniqueFeatures;
@@ -137,7 +143,15 @@ function Map(props) {
                     );
                 });
                 map.current.on("click", (event) => {
-                    clickHandler(event, map);
+                    // Disable moveend event because it triggers when 'fly-to' finishes
+                    map.current.off("moveend", onMoveEnd);
+                    map.current.on("moveend", () => {
+                        map.current.on("moveend", onMoveEnd);
+                    });
+                    const renderedFeature = clickHandler(event, map);
+                    if (renderedFeature) {
+                        props.renderedFeaturesChangeHandler(renderedFeature);
+                    }
                 });
             });
 

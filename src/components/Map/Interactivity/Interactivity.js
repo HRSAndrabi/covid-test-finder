@@ -15,185 +15,197 @@ const marker = new mapboxgl.Marker({
     draggable: false,
 });
 
-function renderListings(features, map, filterEl) {
+function renderListingCollapsed(feature, collapsed, map) {
     const onFeatureClick = (event) => {
-        const coordinates = JSON.parse(
-            "[" + event.currentTarget.dataset.coordinates + "]"
-        );
-        marker.remove();
-        marker.setLngLat(coordinates).addTo(map.current);
-        map.current.flyTo({
-            center: [coordinates[0], coordinates[1] - 0.005],
-            zoom: 14,
-            maDuration: 200,
-        });
+        if (collapsed) {
+            const coordinates = feature.geometry.coordinates;
+            marker.remove();
+            marker.setLngLat(coordinates).addTo(map.current);
+            map.current.flyTo({
+                center: [coordinates[0], coordinates[1] - 0.005],
+                zoom: 14,
+                maDuration: 200,
+            });
+            const parentList = document.getElementById("visible-sites-list");
+            parentList.classList.toggle("visible-sites-list--detail");
+            document
+                .querySelectorAll(".list-item.collapsed")
+                .forEach((el) => el.classList.add("hidden"));
+            event.currentTarget.classList.remove("collapsed");
+            event.currentTarget.classList.remove("hidden");
+        }
     };
+    return (
+        <li
+            className={`list-item ${collapsed ? "collapsed" : ""}`}
+            key={feature.properties["ID"]}
+            onClick={onFeatureClick}
+        >
+            <div className="list-item__header">
+                <div className="site-name">
+                    {feature.properties["SITE_NAME"]}
+                </div>
+                <div className="site-address">
+                    Address:{" "}
+                    {`${feature.properties["ADDRESS"]}, ${feature.properties["SUBURB"]}, ${feature.properties["POSTCODE"]}`}
+                </div>
+                <div className="site-properties">
+                    <Chip
+                        label={
+                            feature.properties["IS_OPEN"] === "unknown"
+                                ? "Hours unavailable"
+                                : feature.properties["IS_OPEN"]
+                        }
+                        color={
+                            feature.properties["IS_OPEN"] === "open"
+                                ? "success"
+                                : feature.properties["IS_OPEN"] === "unknown"
+                                ? "warning"
+                                : "error"
+                        }
+                        size="small"
+                    />
+                    {!!feature.properties["SERVICE_FORMAT"] && (
+                        <Chip
+                            label={feature.properties["SERVICE_FORMAT"]}
+                            color="default"
+                            size="small"
+                        />
+                    )}
+                    {!!feature.properties["REQUIREMENTS"] && (
+                        <Chip
+                            label={feature.properties["REQUIREMENTS"]}
+                            color="default"
+                            size="small"
+                        />
+                    )}
+                    {!!feature.properties["AGE_LIMIT"] && (
+                        <Chip
+                            label={feature.properties["AGE_LIMIT"]}
+                            color="default"
+                            size="small"
+                        />
+                    )}
+                </div>
+            </div>
+            <div className="list-item__body">
+                {feature.properties["IS_OPEN"] !== "unknown" ? (
+                    <table className="site-hours">
+                        <tbody>
+                            <tr>
+                                <td className="left">Monday</td>
+                                <td className="right">
+                                    {feature.properties["MO_START"] &&
+                                    feature.properties["MO_END"]
+                                        ? `${feature.properties["MO_START"]} to ${feature.properties["MO_END"]}`.toLowerCase()
+                                        : "closed"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="left">Tuesday</td>
+                                <td className="right">
+                                    {feature.properties["TU_START"] &&
+                                    feature.properties["TU_END"]
+                                        ? `${feature.properties["TU_START"]} to ${feature.properties["TU_END"]}`.toLowerCase()
+                                        : "closed"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="left">Wednesday</td>
+                                <td className="right">
+                                    {feature.properties["WE_START"] &&
+                                    feature.properties["WE_END"]
+                                        ? `${feature.properties["WE_START"]} to ${feature.properties["WE_END"]}`.toLowerCase()
+                                        : "closed"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="left">Thursday</td>
+                                <td className="right">
+                                    {feature.properties["TH_START"] &&
+                                    feature.properties["TH_END"]
+                                        ? `${feature.properties["TH_START"]} to ${feature.properties["TH_END"]}`.toLowerCase()
+                                        : "closed"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="left">Friday</td>
+                                <td className="right">
+                                    {feature.properties["FR_START"] &&
+                                    feature.properties["FR_END"]
+                                        ? `${feature.properties["FR_START"]} to ${feature.properties["FR_END"]}`.toLowerCase()
+                                        : "closed"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="left">Saturday</td>
+                                <td className="right">
+                                    {feature.properties["SA_START"] &&
+                                    feature.properties["SA_END"]
+                                        ? `${feature.properties["SA_START"]} to ${feature.properties["SA_END"]}`.toLowerCase()
+                                        : "closed"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="left">Sunday</td>
+                                <td className="right">
+                                    {feature.properties["SU_START"] &&
+                                    feature.properties["SU_END"]
+                                        ? `${feature.properties["SU_START"]} to ${feature.properties["SU_END"]}`.toLowerCase()
+                                        : "closed"}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                ) : (
+                    <div className="site-hours--unavailable">
+                        Call to confirm opening hours.
+                    </div>
+                )}
+            </div>
+            <div className="list-item__footer">
+                {feature.properties["PHONE"] && (
+                    <a
+                        href={`tel:${feature.properties["PHONE"]}`}
+                        target="_blank"
+                        className="site-actions"
+                    >
+                        <MdCallEnd /> phone
+                    </a>
+                )}
+                {feature.properties["WEBSITE"] && (
+                    <a
+                        href={feature.properties["WEBSITE"]}
+                        target="_blank"
+                        className="site-actions"
+                    >
+                        <MdLink /> website
+                    </a>
+                )}
+                {feature.properties["ADDRESS_SUBURB_POSTCODE"] && (
+                    <a
+                        href={`http://maps.google.com/?q=${feature.properties["ADDRESS_SUBURB_POSTCODE"]}`}
+                        target="_blank"
+                        className="site-actions"
+                    >
+                        <MdNearMe /> directions
+                    </a>
+                )}
+            </div>
+        </li>
+    );
+}
 
+function renderListings(features, collapsed, map, filterEl) {
     if (features.length) {
         const testingSiteList = features.map((feature) => {
-            return (
-                <li
-                    className="list-item"
-                    key={feature.properties["ID"]}
-                    data-coordinates={feature.geometry.coordinates}
-                    onClick={onFeatureClick}
-                >
-                    <div className="list-item__header">
-                        <div className="site-name">
-                            {feature.properties["SITE_NAME"]}
-                        </div>
-                        <div className="site-address">
-                            Address:{" "}
-                            {`${feature.properties["ADDRESS"]}, ${feature.properties["SUBURB"]}, ${feature.properties["POSTCODE"]}`}
-                        </div>
-                        <div className="site-properties">
-                            <Chip
-                                label={
-                                    feature.properties["IS_OPEN"] === "unknown"
-                                        ? "Hours unavailable"
-                                        : feature.properties["IS_OPEN"]
-                                }
-                                color={
-                                    feature.properties["IS_OPEN"] === "open"
-                                        ? "success"
-                                        : feature.properties["IS_OPEN"] ===
-                                          "unknown"
-                                        ? "warning"
-                                        : "error"
-                                }
-                                size="small"
-                            />
-                            {!!feature.properties["SERVICE_FORMAT"] && (
-                                <Chip
-                                    label={feature.properties["SERVICE_FORMAT"]}
-                                    color="default"
-                                    size="small"
-                                />
-                            )}
-                            {!!feature.properties["REQUIREMENTS"] && (
-                                <Chip
-                                    label={feature.properties["REQUIREMENTS"]}
-                                    color="default"
-                                    size="small"
-                                />
-                            )}
-                            {!!feature.properties["AGE_LIMIT"] && (
-                                <Chip
-                                    label={feature.properties["AGE_LIMIT"]}
-                                    color="default"
-                                    size="small"
-                                />
-                            )}
-                        </div>
-                    </div>
-                    <div className="list-item__body">
-                        {feature.properties["IS_OPEN"] !== "unknown" ? (
-                            <table className="site-hours">
-                                <tbody>
-                                    <tr>
-                                        <td className="left">Monday</td>
-                                        <td className="right">
-                                            {feature.properties["MO_START"] &&
-                                            feature.properties["MO_END"]
-                                                ? `${feature.properties["MO_START"]} to ${feature.properties["MO_END"]}`.toLowerCase()
-                                                : "closed"}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="left">Tuesday</td>
-                                        <td className="right">
-                                            {feature.properties["TU_START"] &&
-                                            feature.properties["TU_END"]
-                                                ? `${feature.properties["TU_START"]} to ${feature.properties["TU_END"]}`.toLowerCase()
-                                                : "closed"}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="left">Wednesday</td>
-                                        <td className="right">
-                                            {feature.properties["WE_START"] &&
-                                            feature.properties["WE_END"]
-                                                ? `${feature.properties["WE_START"]} to ${feature.properties["WE_END"]}`.toLowerCase()
-                                                : "closed"}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="left">Thursday</td>
-                                        <td className="right">
-                                            {feature.properties["TH_START"] &&
-                                            feature.properties["TH_END"]
-                                                ? `${feature.properties["TH_START"]} to ${feature.properties["TH_END"]}`.toLowerCase()
-                                                : "closed"}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="left">Friday</td>
-                                        <td className="right">
-                                            {feature.properties["FR_START"] &&
-                                            feature.properties["FR_END"]
-                                                ? `${feature.properties["FR_START"]} to ${feature.properties["FR_END"]}`.toLowerCase()
-                                                : "closed"}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="left">Saturday</td>
-                                        <td className="right">
-                                            {feature.properties["SA_START"] &&
-                                            feature.properties["SA_END"]
-                                                ? `${feature.properties["SA_START"]} to ${feature.properties["SA_END"]}`.toLowerCase()
-                                                : "closed"}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="left">Sunday</td>
-                                        <td className="right">
-                                            {feature.properties["SU_START"] &&
-                                            feature.properties["SU_END"]
-                                                ? `${feature.properties["SU_START"]} to ${feature.properties["SU_END"]}`.toLowerCase()
-                                                : "closed"}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        ) : (
-                            <div className="site-hours--unavailable">
-                                Call to confirm opening hours.
-                            </div>
-                        )}
-                    </div>
-                    <div className="list-item__footer">
-                        {feature.properties["PHONE"] && (
-                            <a
-                                href={`tel:${feature.properties["PHONE"]}`}
-                                target="_blank"
-                                className="site-actions"
-                            >
-                                <MdCallEnd /> phone
-                            </a>
-                        )}
-                        {feature.properties["WEBSITE"] && (
-                            <a
-                                href={feature.properties["WEBSITE"]}
-                                target="_blank"
-                                className="site-actions"
-                            >
-                                <MdLink /> website
-                            </a>
-                        )}
-                        {feature.properties["ADDRESS_SUBURB_POSTCODE"] && (
-                            <a
-                                href={`http://maps.google.com/?q=${feature.properties["ADDRESS_SUBURB_POSTCODE"]}`}
-                                target="_blank"
-                                className="site-actions"
-                            >
-                                <MdNearMe /> directions
-                            </a>
-                        )}
-                    </div>
-                </li>
-            );
+            return renderListingCollapsed(feature, collapsed, map);
         });
-        return <ul className="visible-sites-list">{testingSiteList}</ul>;
+        return (
+            <ul id="visible-sites-list" className="visible-sites-list">
+                {testingSiteList}
+            </ul>
+        );
     } else if (filterEl && filterEl.value.length < 3) {
         return (
             <ul className="visible-sites-list">
@@ -262,25 +274,37 @@ export function moveStartHandler(event, map) {
     map.current.setFilter("all-vic-testing-sites", ["has", "ACTIVE"]);
 }
 
-export function moveEndHandler(map) {
+export function moveEndHandler(event, map) {
     const features = map.current.queryRenderedFeatures({
         layers: ["all-vic-testing-sites"],
     });
 
-    if (features) {
+    if (features.length > 1) {
+        // marker.remove();
         const uniqueFeatures = getUniqueFeatures(features, "ID");
-        const renderedFeatures = renderListings(uniqueFeatures, map);
+        const renderedFeatures = renderListings(uniqueFeatures, true, map);
 
         // later use for filtering on `keyup`.
         return {
             renderedFeatures: renderedFeatures,
             uniqueFeatures: uniqueFeatures,
         };
+    } else if (features.length === 1) {
+        const renderedFeatures = renderListings(features, false, map);
+        // later use for filtering on `keyup`.
+        return {
+            renderedFeatures: renderedFeatures,
+            uniqueFeatures: renderedFeatures,
+        };
     }
 }
 
 export function filterKeyUp(event, map, filterEl, data) {
     const value = normalize(event.target.value);
+    document.querySelectorAll(".list-item").forEach((el) => {
+        el.classList.remove("hidden");
+        el.classList.add("collapsed");
+    });
 
     // Filter visible features that match the input value.
     const filtered = [];
@@ -299,20 +323,30 @@ export function filterKeyUp(event, map, filterEl, data) {
 
     if (visibleFeatures.length === 0 && filterEl && filterEl.value === "") {
         // If search bar is empty and no features are visible
-        const renderedFeatures = renderListings(visibleFeatures, map, filterEl);
+        const renderedFeatures = renderListings(
+            visibleFeatures,
+            map,
+            true,
+            filterEl
+        );
         return {
             renderedFeatures: renderedFeatures,
             uniqueFeatures: [],
         };
     } else if (filterEl && filterEl.value.length > 2) {
         const uniqueFeatures = getUniqueFeatures(filtered, "ID");
-        const renderedFeatures = renderListings(uniqueFeatures, map, filterEl);
+        const renderedFeatures = renderListings(
+            uniqueFeatures,
+            map,
+            true,
+            filterEl
+        );
         return {
             renderedFeatures: renderedFeatures,
             uniqueFeatures: uniqueFeatures,
         };
     } else {
-        const renderedFeatures = renderListings([], map, filterEl);
+        const renderedFeatures = renderListings([], map, true, filterEl);
         return {
             renderedFeatures: renderedFeatures,
             uniqueFeatures: [],
@@ -321,19 +355,30 @@ export function filterKeyUp(event, map, filterEl, data) {
 }
 
 export function clickHandler(event, map) {
-    const selectedPoint = map.current.queryRenderedFeatures(event.point, {
+    const clickedFeature = map.current.queryRenderedFeatures(event.point, {
         layers: ["all-vic-testing-sites"],
     });
-    const coordinates = selectedPoint[0].geometry.coordinates;
+    const visibleFeatures = map.current.queryRenderedFeatures({
+        layers: ["all-vic-testing-sites"],
+    });
 
-    if (selectedPoint.length > 0) {
-        marker.remove();
+    if (clickedFeature.length > 0) {
+        const feature = clickedFeature[0];
+        const coordinates = feature.geometry.coordinates;
         marker.setLngLat(coordinates).addTo(map.current);
         map.current.flyTo({
             center: [coordinates[0], coordinates[1] - 0.005],
             zoom: 14,
-            maDuration: 200,
         });
+        console.log(feature);
+        const renderedFeatures = renderListings([feature], false, map);
+        return renderedFeatures;
+    } else if (visibleFeatures.length > 1) {
+        marker.remove();
+        const uniqueFeatures = getUniqueFeatures(visibleFeatures, "ID");
+        const renderedFeatures = renderListings(uniqueFeatures, true, map);
+
+        return renderedFeatures;
     }
 }
 
@@ -342,7 +387,7 @@ export function initialRender(map, data) {
 
     if (features) {
         const uniqueFeatures = getUniqueFeatures(features, "ID");
-        const renderedFeatures = renderListings(uniqueFeatures, map);
+        const renderedFeatures = renderListings(uniqueFeatures, true, map);
 
         return {
             renderedFeatures: renderedFeatures,
