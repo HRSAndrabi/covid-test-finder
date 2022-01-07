@@ -2,6 +2,7 @@
 
 .desktop-drawer {
     height: 100vh;
+    min-width: max-content;
     overflow-y: auto;
     @include breakpoint-max($lg) {
         display: none;

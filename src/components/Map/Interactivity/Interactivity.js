@@ -9,10 +9,26 @@ import {
 } from "react-icons/md";
 
 function renderListings(features, map, filterEl) {
+    const onFeatureClick = (event) => {
+        const coordinates = JSON.parse(
+            "[" + event.currentTarget.dataset.coordinates + "]"
+        );
+        map.current.flyTo({
+            center: [coordinates[0], coordinates[1] - 0.005],
+            zoom: 14,
+            maDuration: 200,
+        });
+    };
+
     if (features.length) {
         const testingSiteList = features.map((feature) => {
             return (
-                <li className="list-item" key={feature.properties["ID"]}>
+                <li
+                    className="list-item"
+                    key={feature.properties["ID"]}
+                    data-coordinates={feature.geometry.coordinates}
+                    onClick={onFeatureClick}
+                >
                     <div className="list-item__header">
                         <div className="site-name">
                             {feature.properties["SITE_NAME"]}
@@ -235,7 +251,7 @@ export function moveStartHandler(event, map) {
     map.current.setFilter("all-vic-testing-sites", ["has", "ACTIVE"]);
 }
 
-export function moveEndHandler(event, map, filterEl) {
+export function moveEndHandler(map) {
     const features = map.current.queryRenderedFeatures({
         layers: ["all-vic-testing-sites"],
     });
@@ -289,6 +305,20 @@ export function filterKeyUp(event, map, filterEl, data) {
         return {
             renderedFeatures: renderedFeatures,
             uniqueFeatures: [],
+        };
+    }
+}
+
+export function initialRender(map, data) {
+    const features = data.features;
+
+    if (features) {
+        const uniqueFeatures = getUniqueFeatures(features, "ID");
+        const renderedFeatures = renderListings(uniqueFeatures, map);
+
+        return {
+            renderedFeatures: renderedFeatures,
+            uniqueFeatures: uniqueFeatures,
         };
     }
 }

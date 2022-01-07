@@ -1,7 +1,11 @@
 @import "src/App.scss";
 
 .map-container {
-    min-height: 100vh;
-    flex-grow: 1;
+    height: 100vh;
+    flex: 1;
     background-color: $cp-grey-100;
+
+    @include breakpoint-max($md) {
+        max-width: 100vw;
+    }
 }

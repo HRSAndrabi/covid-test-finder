@@ -9,6 +9,7 @@ import {
     moveStartHandler,
     moveEndHandler,
     filterKeyUp,
+    initialRender,
 } from "./Interactivity/Interactivity";
 
 const { REACT_APP_MAPBOX_API_TOKEN } = process.env;
@@ -90,13 +91,18 @@ function Map(props) {
                 // Interactivity -------------------------------------------------
                 // ---------------------------------------------------------------
                 const filterEl = document.getElementById("search__input");
-                let visibleTestingSites = [];
+                // let visibleTestingSites = [];
+                let featureObj = initialRender(map, data);
+                let visibleTestingSites = featureObj.uniqueFeatures;
+                props.renderedFeaturesChangeHandler(
+                    featureObj.renderedFeatures
+                );
                 map.current.on("movestart", (event) => {
                     moveStartHandler(event, map, filterEl);
                 });
                 map.current.on("moveend", (event) => {
                     if (filterEl.value.length === 0) {
-                        const featureObj = moveEndHandler(event, map, filterEl);
+                        const featureObj = moveEndHandler(map);
                         visibleTestingSites = featureObj.uniqueFeatures;
                         props.renderedFeaturesChangeHandler(
                             featureObj.renderedFeatures
