@@ -10,7 +10,9 @@ import {
     moveEndHandler,
     filterKeyUp,
     initialRender,
+    clickHandler,
 } from "./Interactivity/Interactivity";
+import { click } from "@testing-library/user-event/dist/click";
 
 const { REACT_APP_MAPBOX_API_TOKEN } = process.env;
 mapboxgl.accessToken = REACT_APP_MAPBOX_API_TOKEN;
@@ -31,6 +33,23 @@ function Map(props) {
             ],
             attributionControl: false,
         });
+        map.current.addControl(
+            new mapboxgl.AttributionControl({
+                customAttribution: "Map design by me",
+                compact: true,
+            })
+        );
+        map.current.addControl(
+            new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true,
+                },
+                trackUserLocation: true,
+                showUserHeading: true,
+            }),
+            "top-left"
+        );
+        map.current.addControl(new mapboxgl.NavigationControl({}), "top-left");
 
         map.current.dragRotate.disable();
         map.current.touchZoomRotate.disableRotation();
@@ -115,6 +134,9 @@ function Map(props) {
                     props.renderedFeaturesChangeHandler(
                         featureObj.renderedFeatures
                     );
+                });
+                map.current.on("click", (event) => {
+                    clickHandler(event, map);
                 });
             });
 

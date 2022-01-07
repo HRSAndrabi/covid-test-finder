@@ -1,3 +1,5 @@
+/* eslint import/no-webpack-loader-syntax: off */
+import mapboxgl from "!mapbox-gl";
 import { Chip } from "@mui/material";
 import {
     MdDirectionsWalk,
@@ -8,11 +10,18 @@ import {
     MdLink,
 } from "react-icons/md";
 
+const marker = new mapboxgl.Marker({
+    color: "#ef5350",
+    draggable: false,
+});
+
 function renderListings(features, map, filterEl) {
     const onFeatureClick = (event) => {
         const coordinates = JSON.parse(
             "[" + event.currentTarget.dataset.coordinates + "]"
         );
+        marker.remove();
+        marker.setLngLat(coordinates).addTo(map.current);
         map.current.flyTo({
             center: [coordinates[0], coordinates[1] - 0.005],
             zoom: 14,
@@ -308,6 +317,23 @@ export function filterKeyUp(event, map, filterEl, data) {
             renderedFeatures: renderedFeatures,
             uniqueFeatures: [],
         };
+    }
+}
+
+export function clickHandler(event, map) {
+    const selectedPoint = map.current.queryRenderedFeatures(event.point, {
+        layers: ["all-vic-testing-sites"],
+    });
+    const coordinates = selectedPoint[0].geometry.coordinates;
+
+    if (selectedPoint.length > 0) {
+        marker.remove();
+        marker.setLngLat(coordinates).addTo(map.current);
+        map.current.flyTo({
+            center: [coordinates[0], coordinates[1] - 0.005],
+            zoom: 14,
+            maDuration: 200,
+        });
     }
 }
 
