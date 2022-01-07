@@ -9,12 +9,10 @@ const SidePanel = (props) => {
 
     const drawerOpenHandler = () => {
         setDrawerOpen(true);
-        console.log(true);
     };
 
     const drawerCloseHandler = () => {
         setDrawerOpen(false);
-        console.log(false);
     };
 
     return (
