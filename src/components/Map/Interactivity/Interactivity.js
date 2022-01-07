@@ -8,7 +8,7 @@ import {
     MdLink,
 } from "react-icons/md";
 
-function renderListings(features, map) {
+function renderListings(features, map, filterEl) {
     if (features.length) {
         const testingSiteList = features.map((feature) => {
             return (
@@ -169,17 +169,53 @@ function renderListings(features, map) {
             );
         });
         return <ul className="visible-sites-list">{testingSiteList}</ul>;
-    } else if (features.length === 0) {
-        return <p>No results found</p>;
+    } else if (filterEl && filterEl.value.length < 3) {
+        return (
+            <ul className="visible-sites-list">
+                <li className="noresults">
+                    <div className="noresults__heading">
+                        Enter at least three characters to search 🔎
+                    </div>
+                </li>
+            </ul>
+        );
+    } else if (features.length === 0 && filterEl && filterEl.value !== "") {
+        console.log("NO1");
+        return (
+            <ul className="visible-sites-list">
+                <li className="noresults">
+                    <div className="noresults__heading">
+                        No matching results 😞
+                    </div>
+                    <div className="noresults__body">
+                        We couldn't find a testing site matching your search.
+                        Drag the map or try a new search to populate results.
+                    </div>
+                </li>
+            </ul>
+        );
     } else {
         // remove features filter
+        console.log("NO2");
         map.current.setFilter("all-vic-testing-sites", ["has", "ACTIVE"]);
-        return <p>Drag the map to populate results</p>;
+        return (
+            <ul className="visible-sites-list">
+                <li className="noresults">
+                    <div className="noresults__heading">
+                        Drag the map or search to populate results!
+                    </div>
+                </li>
+            </ul>
+        );
     }
 }
 
-function normalize(string) {
-    return string.trim().toLowerCase();
+function normalize(value) {
+    if (typeof value === "string") {
+        return value.trim().toLowerCase();
+    } else {
+        return value;
+    }
 }
 
 function getUniqueFeatures(features, comparatorProperty) {
@@ -199,21 +235,60 @@ export function moveStartHandler(event, map) {
     map.current.setFilter("all-vic-testing-sites", ["has", "ACTIVE"]);
 }
 
-export function moveEndHandler(event, map) {
+export function moveEndHandler(event, map, filterEl) {
     const features = map.current.queryRenderedFeatures({
         layers: ["all-vic-testing-sites"],
     });
 
     if (features) {
         const uniqueFeatures = getUniqueFeatures(features, "ID");
-        // Populate features for the listing overlay.
         const renderedFeatures = renderListings(uniqueFeatures, map);
 
-        // Store the current features in sn `airports` variable to
         // later use for filtering on `keyup`.
         return {
             renderedFeatures: renderedFeatures,
             uniqueFeatures: uniqueFeatures,
+        };
+    }
+}
+
+export function filterKeyUp(event, map, filterEl, data) {
+    const value = normalize(event.target.value);
+
+    // Filter visible features that match the input value.
+    const filtered = [];
+    const allFeatures = data.features;
+    const visibleFeatures =
+        map.current.querySourceFeatures("vic-testing-sites");
+    for (const feature of allFeatures) {
+        const name = normalize(feature.properties["SITE_NAME"]);
+        const address = normalize(feature.properties["ADDRESS"]);
+        const suburb = normalize(feature.properties["SUBURB"]);
+        const postcode = normalize(feature.properties["POSTCODE"]);
+        if ([name, address, suburb, postcode].join(" ").includes(value)) {
+            filtered.push(feature);
+        }
+    }
+
+    if (visibleFeatures.length === 0 && filterEl && filterEl.value === "") {
+        // If search bar is empty and no features are visible
+        const renderedFeatures = renderListings(visibleFeatures, map, filterEl);
+        return {
+            renderedFeatures: renderedFeatures,
+            uniqueFeatures: [],
+        };
+    } else if (filterEl && filterEl.value.length > 2) {
+        const uniqueFeatures = getUniqueFeatures(filtered, "ID");
+        const renderedFeatures = renderListings(uniqueFeatures, map, filterEl);
+        return {
+            renderedFeatures: renderedFeatures,
+            uniqueFeatures: uniqueFeatures,
+        };
+    } else {
+        const renderedFeatures = renderListings([], map, filterEl);
+        return {
+            renderedFeatures: renderedFeatures,
+            uniqueFeatures: [],
         };
     }
 }

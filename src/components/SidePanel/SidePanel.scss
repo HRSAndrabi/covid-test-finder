@@ -84,6 +84,12 @@
             height: 300px;
             padding-top: $s2;
             overflow-y: auto;
+            -ms-overflow-style: none; /* Internet Explorer 10+ */
+            scrollbar-width: none; /* Firefox */
+
+            &::-webkit-scrollbar {
+                display: none; /* Safari and Chrome */
+            }
         }
     }
 
@@ -99,6 +105,25 @@
     font-size: 0.9rem;
     width: 100%;
 
+    .noresults {
+        padding: $s3;
+
+        &__heading {
+            color: $cp-grey-800;
+            font-weight: 500;
+            font-size: 1.3rem;
+            padding-bottom: $s4;
+            text-align: center;
+        }
+
+        &__body {
+            font-size: 0.9rem;
+            color: $cp-grey-600;
+            padding: 0 $s4;
+            text-align: center;
+        }
+    }
+
     .list-item {
         border-bottom: 2px solid $cp-grey-100;
         padding: $s2 $s8;
@@ -110,15 +135,16 @@
                 text-overflow: ellipsis;
                 padding-right: $s4;
                 font-weight: 500;
-                line-height: 0.8rem;
             }
             .site-properties {
+                padding-top: $s1;
                 display: flex;
                 flex-wrap: wrap;
                 gap: $s1;
             }
             .site-address {
                 font-size: 0.8rem;
+                line-height: 0.8rem;
                 color: $cp-grey-600;
             }
         }

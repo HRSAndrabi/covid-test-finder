@@ -8,6 +8,7 @@ import HaGarage from "./Symbols/HaGarage.png";
 import {
     moveStartHandler,
     moveEndHandler,
+    filterKeyUp,
 } from "./Interactivity/Interactivity";
 
 const { REACT_APP_MAPBOX_API_TOKEN } = process.env;
@@ -82,17 +83,28 @@ function Map(props) {
                         "icon-opacity": 0.9,
                     },
                 });
+                return data;
             })
-            .then(() => {
+            .then((data) => {
                 // ---------------------------------------------------------------
                 // Interactivity -------------------------------------------------
                 // ---------------------------------------------------------------
+                const filterEl = document.getElementById("search__input");
                 let visibleTestingSites = [];
                 map.current.on("movestart", (event) => {
-                    moveStartHandler(event, map);
+                    moveStartHandler(event, map, filterEl);
                 });
                 map.current.on("moveend", (event) => {
-                    const featureObj = moveEndHandler(event, map);
+                    if (filterEl.value.length === 0) {
+                        const featureObj = moveEndHandler(event, map, filterEl);
+                        visibleTestingSites = featureObj.uniqueFeatures;
+                        props.renderedFeaturesChangeHandler(
+                            featureObj.renderedFeatures
+                        );
+                    }
+                });
+                filterEl.addEventListener("input", (event) => {
+                    const featureObj = filterKeyUp(event, map, filterEl, data);
                     visibleTestingSites = featureObj.uniqueFeatures;
                     props.renderedFeaturesChangeHandler(
                         featureObj.renderedFeatures
