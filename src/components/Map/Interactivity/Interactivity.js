@@ -296,6 +296,12 @@ export function moveEndHandler(event, map) {
             renderedFeatures: renderedFeatures,
             uniqueFeatures: renderedFeatures,
         };
+    } else {
+        const renderedFeatures = renderListings([], false, map);
+        return {
+            renderedFeatures: renderedFeatures,
+            uniqueFeatures: [],
+        };
     }
 }
 
@@ -325,11 +331,12 @@ export function filterKeyUp(event, map, filterEl, data) {
         // If search bar is empty and no features are visible
         const renderedFeatures = renderListings(
             visibleFeatures,
-            map,
             true,
+            map,
             filterEl
         );
         return {
+            drawerOpen: true,
             renderedFeatures: renderedFeatures,
             uniqueFeatures: [],
         };
@@ -337,17 +344,32 @@ export function filterKeyUp(event, map, filterEl, data) {
         const uniqueFeatures = getUniqueFeatures(filtered, "ID");
         const renderedFeatures = renderListings(
             uniqueFeatures,
-            map,
             true,
+            map,
             filterEl
         );
         return {
+            drawerOpen: true,
+            renderedFeatures: renderedFeatures,
+            uniqueFeatures: uniqueFeatures,
+        };
+    } else if (filterEl && filterEl.value.length === 0) {
+        const uniqueFeatures = getUniqueFeatures(visibleFeatures, "ID");
+        const renderedFeatures = renderListings(
+            uniqueFeatures,
+            true,
+            map,
+            filterEl
+        );
+        return {
+            drawerOpen: true,
             renderedFeatures: renderedFeatures,
             uniqueFeatures: uniqueFeatures,
         };
     } else {
         const renderedFeatures = renderListings([], map, true, filterEl);
         return {
+            drawerOpen: true,
             renderedFeatures: renderedFeatures,
             uniqueFeatures: [],
         };
@@ -361,8 +383,7 @@ export function clickHandler(event, map) {
     const visibleFeatures = map.current.queryRenderedFeatures({
         layers: ["all-vic-testing-sites"],
     });
-
-    if (clickedFeature.length > 0) {
+    if (clickedFeature.length === 1) {
         const feature = clickedFeature[0];
         const coordinates = feature.geometry.coordinates;
         marker.setLngLat(coordinates).addTo(map.current);
@@ -370,16 +391,15 @@ export function clickHandler(event, map) {
             center: [coordinates[0], coordinates[1] - 0.005],
             zoom: 14,
         });
-        console.log(feature);
         const renderedFeatures = renderListings([feature], false, map);
-        return renderedFeatures;
-    } else if (visibleFeatures.length > 1) {
+        return { renderedFeatures: renderedFeatures, drawerOpen: true };
+    } else if (visibleFeatures.length && visibleFeatures.length > 1) {
         marker.remove();
         const uniqueFeatures = getUniqueFeatures(visibleFeatures, "ID");
         const renderedFeatures = renderListings(uniqueFeatures, true, map);
 
-        return renderedFeatures;
-    }
+        return { renderedFeatures: renderedFeatures, drawerOpen: false };
+    } else return { drawerOpen: false };
 }
 
 export function initialRender(map, data) {

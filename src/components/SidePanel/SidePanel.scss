@@ -88,6 +88,9 @@
             overflow-y: auto;
             -ms-overflow-style: none; /* Internet Explorer 10+ */
             scrollbar-width: none; /* Firefox */
+            @include breakpoint-min($sm) {
+                height: 300px;
+            }
 
             &::-webkit-scrollbar {
                 display: none; /* Safari and Chrome */
@@ -97,6 +100,9 @@
 
     .drawer-content.open {
         margin-bottom: 300px;
+        @include breakpoint-min($sm) {
+            margin-bottom: 300px;
+        }
     }
 }
 

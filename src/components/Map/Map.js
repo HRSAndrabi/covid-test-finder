@@ -137,6 +137,7 @@ function Map(props) {
                 map.current.on("moveend", onMoveEnd);
                 filterEl.addEventListener("input", (event) => {
                     const featureObj = filterKeyUp(event, map, filterEl, data);
+                    props.drawerOpenHandler(featureObj.drawerOpen);
                     visibleTestingSites = featureObj.uniqueFeatures;
                     props.renderedFeaturesChangeHandler(
                         featureObj.renderedFeatures
@@ -148,15 +149,18 @@ function Map(props) {
                     map.current.on("moveend", () => {
                         map.current.on("moveend", onMoveEnd);
                     });
-                    const renderedFeature = clickHandler(event, map);
-                    if (renderedFeature) {
-                        props.renderedFeaturesChangeHandler(renderedFeature);
+                    const resultObj = clickHandler(event, map);
+                    props.drawerOpenHandler(resultObj.drawerOpen);
+                    if (resultObj.renderedFeatures) {
+                        props.renderedFeaturesChangeHandler(
+                            resultObj.renderedFeatures
+                        );
                     }
                 });
             });
 
         // Clean up on unmount
-        return () => map.remove();
+        return () => map.current.remove();
     }, []);
 
     return <div ref={mapContainer} className="map-container" />;

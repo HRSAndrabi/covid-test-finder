@@ -12,6 +12,7 @@ function App() {
         features: [],
     });
     const [renderedFeatures, setRenderedFeatures] = useState();
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     useEffect(() => {
         fetchVicData().then((data) => {
@@ -23,14 +24,23 @@ function App() {
         setRenderedFeatures(newRenderedFeatures);
     };
 
+    const drawerOpenHandler = (drawerOpen) => {
+        setDrawerOpen(drawerOpen);
+    };
+
     return (
         <div className="App">
             <ThemeProvider theme={theme}>
-                <SidePanel renderedFeatures={renderedFeatures} />
+                <SidePanel
+                    renderedFeatures={renderedFeatures}
+                    drawerOpen={drawerOpen}
+                    drawerOpenHandler={drawerOpenHandler}
+                />
                 <Map
                     renderedFeaturesChangeHandler={
                         renderedFeaturesChangeHandler
                     }
+                    drawerOpenHandler={drawerOpenHandler}
                 />
             </ThemeProvider>
         </div>

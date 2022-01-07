@@ -1,19 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./SidePanel.scss";
 import { MdSearch } from "react-icons/md";
 import _uniqueId from "lodash/uniqueId";
 
 const SidePanel = (props) => {
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(props.drawerOpen);
     const [id, setID] = useState(_uniqueId("form-"));
 
     const drawerOpenHandler = () => {
-        setDrawerOpen(true);
+        props.drawerOpenHandler(true);
     };
 
     const drawerCloseHandler = () => {
         setDrawerOpen(false);
     };
+
+    useEffect(() => {
+        setDrawerOpen(props.drawerOpen);
+        return () => {};
+    }, [props]);
 
     return (
         <>
@@ -23,8 +28,8 @@ const SidePanel = (props) => {
             <div
                 className="mobile-drawer"
                 tabIndex={0}
-                onFocus={drawerOpenHandler}
-                onBlur={drawerCloseHandler}
+                onClick={drawerOpenHandler}
+                // onBlur={drawerCloseHandler}
             >
                 <div className="drawer-preview">
                     <div className="handle"></div>
