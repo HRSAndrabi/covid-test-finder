@@ -196,7 +196,6 @@ function renderListings(features, map, filterEl) {
             </ul>
         );
     } else if (features.length === 0 && filterEl && filterEl.value !== "") {
-        console.log("NO1");
         return (
             <ul className="visible-sites-list">
                 <li className="noresults">
@@ -212,13 +211,16 @@ function renderListings(features, map, filterEl) {
         );
     } else {
         // remove features filter
-        console.log("NO2");
         map.current.setFilter("all-vic-testing-sites", ["has", "ACTIVE"]);
         return (
             <ul className="visible-sites-list">
                 <li className="noresults">
                     <div className="noresults__heading">
-                        Drag the map or search to populate results!
+                        No results in area 🌎
+                    </div>
+                    <div className="noresults__body">
+                        We couldn't find a testing site in the shown area. Drag
+                        the map or search to populate results.
                     </div>
                 </li>
             </ul>
