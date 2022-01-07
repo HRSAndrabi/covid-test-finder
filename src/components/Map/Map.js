@@ -35,9 +35,10 @@ function Map(props) {
         });
         map.current.addControl(
             new mapboxgl.AttributionControl({
-                customAttribution: "Map design by me",
+                customAttribution: "Developed by @hrs_andrabi",
                 compact: true,
-            })
+            }),
+            "top-right"
         );
         map.current.addControl(
             new mapboxgl.GeolocateControl({
