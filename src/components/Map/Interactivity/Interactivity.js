@@ -164,6 +164,15 @@ function renderListingCollapsed(feature, collapsed, map) {
                 )}
             </div>
             <div className="list-item__footer">
+                {feature.properties["ADDRESS_SUBURB_POSTCODE"] && (
+                    <a
+                        href={`http://maps.google.com/?q=${feature.properties["ADDRESS_SUBURB_POSTCODE"]}`}
+                        target="_blank"
+                        className="site-actions"
+                    >
+                        <MdNearMe /> directions
+                    </a>
+                )}
                 {feature.properties["PHONE"] && (
                     <a
                         href={`tel:${feature.properties["PHONE"]}`}
@@ -180,15 +189,6 @@ function renderListingCollapsed(feature, collapsed, map) {
                         className="site-actions"
                     >
                         <MdLink /> website
-                    </a>
-                )}
-                {feature.properties["ADDRESS_SUBURB_POSTCODE"] && (
-                    <a
-                        href={`http://maps.google.com/?q=${feature.properties["ADDRESS_SUBURB_POSTCODE"]}`}
-                        target="_blank"
-                        className="site-actions"
-                    >
-                        <MdNearMe /> directions
                     </a>
                 )}
             </div>
