@@ -32,13 +32,18 @@ function newMarkerAtFeature(feature, map) {
     marker.setLngLat(coordinates).addTo(map.current);
 }
 
-export function featureClickHandler(feature, map) {
-    flyToFeature(feature, map);
-    newMarkerAtFeature(feature, map);
+export function refreshSelectedListing() {
+    marker.remove();
     const prevSelectedListing = document.getElementsByClassName("expanded");
     if (prevSelectedListing[0]) {
         prevSelectedListing[0].classList.remove("expanded");
     }
+}
+
+export function featureClickHandler(feature, map) {
+    flyToFeature(feature, map);
+    refreshSelectedListing();
+    newMarkerAtFeature(feature, map);
     const selectedListing = document.getElementById(
         `site-${feature.properties["ID"]}`
     );

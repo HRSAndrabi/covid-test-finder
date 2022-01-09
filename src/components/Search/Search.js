@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdSearch } from "react-icons/md";
 import { Chip } from "@mui/material";
+import { refreshSelectedListing } from "../Map/Interactivity/Interactivity";
 import "./Search.scss";
 
 const Search = (props) => {
@@ -12,6 +13,7 @@ const Search = (props) => {
     });
 
     const filterChangeHandler = (event) => {
+        refreshSelectedListing();
         const newFilter = {
             ...filter,
             [event.target.innerText]: !filter[event.target.innerText],
