@@ -8,8 +8,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 
     .no-results {
         padding: $s4 $s8;
@@ -30,11 +28,16 @@
     }
 
     .list-item {
-        max-width: 400px;
         width: 100%;
         border-bottom: 2px solid $cp-grey-100;
         padding: $s2;
         order: 2;
+
+        .list-item-inner {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+        }
 
         &__header {
             .site-name {
@@ -60,6 +63,7 @@
         &__body {
             padding-top: $s2;
             display: none;
+
             .site-hours {
                 font-size: 0.8rem;
                 width: 100%;
@@ -68,10 +72,13 @@
                 .left {
                     text-align: left;
                     padding-right: $s8;
+                    font-weight: 500;
+                    color: $cp-grey-800;
                 }
 
                 .right {
                     text-align: right;
+                    color: $cp-grey-800;
                 }
             }
             .site-hours--unavailable {
