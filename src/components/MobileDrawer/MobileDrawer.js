@@ -1,45 +1,60 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "./MobileDrawer.scss";
-import { MdSearch } from "react-icons/md";
 import SiteList from "../SiteList/SiteList";
+import Search from "../Search/Search";
 
 const MobileDrawer = (props) => {
-    const [drawerOpen, setDrawerOpen] = useState(props.drawerOpen);
     const drawerOpenHandler = () => {
         props.drawerOpenHandler(true);
     };
-
-    const drawerCloseHandler = () => {
-        setDrawerOpen(false);
-    };
+    const [data, setData] = useState(props.data);
 
     useEffect(() => {
-        setDrawerOpen(props.drawerOpen);
+        setData(props.data);
         return () => {};
-    }, [props]);
+    }, [props.data]);
 
-    const inputFieldId = Math.floor(Math.random() * 10000);
+    const filterChangeHandler = (filter) => {
+        let filteredFeatures = props.data.features;
+        if (filter.open) {
+            filteredFeatures = filteredFeatures.filter((feature) => {
+                return feature.properties["OPEN_STATUS"] === "open";
+            });
+        }
+        if (filter["walk-in"] || filter["drive-through"]) {
+            const serviceTypeFilter =
+                filter["walk-in"] === filter["drive-through"]
+                    ? ["walk-in", "drive-through"]
+                    : filter["walk-in"]
+                    ? ["walk-in"]
+                    : ["drive-through"];
+            filteredFeatures = filteredFeatures.filter((feature) => {
+                return serviceTypeFilter.includes(
+                    feature.properties["SERVICE_FORMAT"]
+                );
+            });
+        }
+        if (filter["all-ages"]) {
+            filteredFeatures = filteredFeatures.filter((feature) => {
+                return feature.properties["AGE_LIMIT"] === "all ages";
+            });
+        }
+        setData({ ...data, features: filteredFeatures });
+    };
 
     return (
         <div className="mobile-drawer" tabIndex={0} onClick={drawerOpenHandler}>
             <div className="drawer-preview">
                 <div className="handle"></div>
-                <div className="search">
-                    <MdSearch className="search__icon" />
-                    <input
-                        id="search__input"
-                        className="search__input"
-                        type="text"
-                        name={inputFieldId}
-                        placeholder="Search testing sites"
-                    />
+                <div className="drawer-search">
+                    <Search onFilter={filterChangeHandler} />
                 </div>
             </div>
-            <div className={`drawer-content ${drawerOpen ? "open" : ""}`}>
+            <div className={`drawer-content ${props.drawerOpen ? "open" : ""}`}>
                 <div className="drawer-content__inner">
                     <div className="testing-site-list">
-                        <SiteList map={props.map} data={props.data} />
+                        <SiteList map={props.map} data={data} />
                     </div>
                 </div>
             </div>
