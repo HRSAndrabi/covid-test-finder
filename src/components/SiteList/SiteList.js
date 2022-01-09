@@ -5,7 +5,7 @@ import "./SiteList.scss";
 const SiteList = (props) => {
     return (
         <ul className="visible-sites-list">
-            {props.data.features.length &&
+            {props.data.features.length ? (
                 props.data.features.map((feature, idx) => {
                     return (
                         <SiteListItem
@@ -14,7 +14,16 @@ const SiteList = (props) => {
                             key={idx}
                         />
                     );
-                })}
+                })
+            ) : (
+                <div className="no-results">
+                    <div className="no-results__heading">No results found</div>
+                    <div className="no-results__body">
+                        We found no testing sites matching your search. Try
+                        other keywords, or explore the map to populate results.
+                    </div>
+                </div>
+            )}
         </ul>
     );
 };

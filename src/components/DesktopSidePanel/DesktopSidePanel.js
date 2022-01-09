@@ -7,9 +7,22 @@ import Filters from "../Filters/Filters";
 
 const DesktopSidePanel = (props) => {
     const [data, setData] = useState(props.data);
+    const [filter, setFilter] = useState({
+        open: false,
+        "walk-in": false,
+        "drive-through": false,
+        "all-ages": false,
+    });
+    const [searchTerm, setSearchTerm] = useState(null);
 
     const filterChangeHandler = (filteredData) => {
-        setData(filteredData);
+        setData(filteredData.data);
+        setFilter(filteredData.filter);
+    };
+
+    const searchHandler = (filteredData) => {
+        setData(filteredData.data);
+        setSearchTerm(filteredData.searchTerm);
     };
 
     useEffect(() => {
@@ -28,11 +41,17 @@ const DesktopSidePanel = (props) => {
                     </div>
                 </div>
                 <div className="drawer-search">
-                    <Search data={props.data} map={props.map} />
+                    <Search
+                        data={props.data}
+                        map={props.map}
+                        filter={filter}
+                        onSearch={searchHandler}
+                    />
                     <Filters
                         onFilter={filterChangeHandler}
                         data={props.data}
                         map={props.map}
+                        searchTerm={searchTerm}
                     />
                 </div>
                 <div className="testing-site-list">

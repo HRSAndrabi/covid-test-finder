@@ -10,6 +10,13 @@ const MobileDrawer = (props) => {
         props.drawerOpenHandler(true);
     };
     const [data, setData] = useState(props.data);
+    const [filter, setFilter] = useState({
+        open: false,
+        "walk-in": false,
+        "drive-through": false,
+        "all-ages": false,
+    });
+    const [searchTerm, setSearchTerm] = useState(null);
 
     useEffect(() => {
         setData(props.data);
@@ -17,15 +24,31 @@ const MobileDrawer = (props) => {
     }, [props.data]);
 
     const filterChangeHandler = (filteredData) => {
-        setData(filteredData);
+        setData(filteredData.data);
+        setFilter(filteredData.filter);
+    };
+
+    const searchHandler = (filteredData) => {
+        setData(filteredData.data);
+        setSearchTerm(filteredData.searchTerm);
     };
 
     return (
         <div className="mobile-drawer" tabIndex={0}>
             <div className="drawer-preview">
-                <div className="handle" onClick={drawerOpenHandler}></div>
-                <div className="drawer-search">
-                    <Search data={props.data} map={props.map} />
+                <div className="handle-container" onClick={drawerOpenHandler}>
+                    <div className="handle"></div>
+                </div>
+                <div className="drawer-search" onClick={drawerOpenHandler}>
+                    <Search
+                        data={props.data}
+                        map={props.map}
+                        filter={filter}
+                        onSearch={searchHandler}
+                        onClick={drawerOpenHandler}
+                    />
+                </div>
+                <div className="drawer-filters">
                     <Filters
                         data={props.data}
                         map={props.map}

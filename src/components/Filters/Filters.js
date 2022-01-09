@@ -2,6 +2,48 @@ import { useState } from "react";
 import "./Filters.scss";
 import { Chip } from "@mui/material";
 import { refreshSelectedListing } from "../Map/Interactivity/Interactivity";
+import { searchFeatures } from "../Search/Search";
+
+export const filterFeatures = (features, filter, map) => {
+    const mapFilters = [];
+    if (filter.open) {
+        mapFilters.push(["==", ["get", "OPEN_STATUS"], "open"]);
+        features = features.filter((feature) => {
+            return feature.properties["OPEN_STATUS"] === "open";
+        });
+    } else {
+        mapFilters.push(["has", "OPEN_STATUS"]);
+    }
+    if (filter["walk-in"] || filter["drive-through"]) {
+        const serviceTypeFilter =
+            filter["walk-in"] === filter["drive-through"]
+                ? ["walk-in", "drive-through"]
+                : filter["walk-in"]
+                ? ["walk-in"]
+                : ["drive-through"];
+        features = features.filter((feature) => {
+            return serviceTypeFilter.includes(
+                feature.properties["SERVICE_FORMAT"]
+            );
+        });
+        mapFilters.push([
+            "any",
+            ...serviceTypeFilter.map((acceptedValue) => {
+                return ["==", ["get", "SERVICE_FORMAT"], acceptedValue];
+            }),
+        ]);
+    }
+    if (filter["all-ages"]) {
+        features = features.filter((feature) => {
+            return feature.properties["AGE_LIMIT"] === "all ages";
+        });
+        mapFilters.push(["==", ["get", "AGE_LIMIT"], "all ages"]);
+    } else {
+        mapFilters.push(["has", "AGE_LIMIT"]);
+    }
+    map.current.setFilter("all-vic-testing-sites", ["all", ...mapFilters]);
+    return features;
+};
 
 const Filters = (props) => {
     const [filter, setFilter] = useState({
@@ -18,48 +60,19 @@ const Filters = (props) => {
             [event.target.innerText]: !filter[event.target.innerText],
         };
         setFilter(newFilter);
-        let filteredFeatures = props.data.features;
-        const mapFilters = [];
-        if (newFilter.open) {
-            mapFilters.push(["==", ["get", "OPEN_STATUS"], "open"]);
-            filteredFeatures = filteredFeatures.filter((feature) => {
-                return feature.properties["OPEN_STATUS"] === "open";
-            });
-        } else {
-            mapFilters.push(["has", "OPEN_STATUS"]);
-        }
-        if (newFilter["walk-in"] || newFilter["drive-through"]) {
-            const serviceTypeFilter =
-                newFilter["walk-in"] === newFilter["drive-through"]
-                    ? ["walk-in", "drive-through"]
-                    : newFilter["walk-in"]
-                    ? ["walk-in"]
-                    : ["drive-through"];
-            filteredFeatures = filteredFeatures.filter((feature) => {
-                return serviceTypeFilter.includes(
-                    feature.properties["SERVICE_FORMAT"]
-                );
-            });
-            mapFilters.push([
-                "any",
-                ...serviceTypeFilter.map((acceptedValue) => {
-                    return ["==", ["get", "SERVICE_FORMAT"], acceptedValue];
-                }),
-            ]);
-        }
-        if (newFilter["all-ages"]) {
-            filteredFeatures = filteredFeatures.filter((feature) => {
-                return feature.properties["AGE_LIMIT"] === "all ages";
-            });
-            mapFilters.push(["==", ["get", "AGE_LIMIT"], "all ages"]);
-        } else {
-            mapFilters.push(["has", "AGE_LIMIT"]);
-        }
-        props.onFilter({ ...props.data, features: filteredFeatures });
-        props.map.current.setFilter("all-vic-testing-sites", [
-            "all",
-            ...mapFilters,
-        ]);
+        let filteredFeatures = searchFeatures(
+            props.data.features,
+            props.searchTerm
+        );
+        filteredFeatures = filterFeatures(
+            filteredFeatures,
+            newFilter,
+            props.map
+        );
+        props.onFilter({
+            filter: newFilter,
+            data: { ...props.data, features: filteredFeatures },
+        });
     };
     return (
         <div className="filters">

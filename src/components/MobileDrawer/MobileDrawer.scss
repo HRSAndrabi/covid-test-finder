@@ -16,6 +16,10 @@
         padding: $s3;
         border-bottom: 2px solid $cp-grey-100;
 
+        .handle-container {
+            width: 100%;
+            height: 6px;
+        }
         .handle {
             width: 30px;
             height: 6px;
