@@ -7,32 +7,8 @@ import Search from "../Search/Search";
 const DesktopSidePanel = (props) => {
     const [data, setData] = useState(props.data);
 
-    const filterChangeHandler = (filter) => {
-        let filteredFeatures = props.data.features;
-        if (filter.open) {
-            filteredFeatures = filteredFeatures.filter((feature) => {
-                return feature.properties["OPEN_STATUS"] === "open";
-            });
-        }
-        if (filter["walk-in"] || filter["drive-through"]) {
-            const serviceTypeFilter =
-                filter["walk-in"] === filter["drive-through"]
-                    ? ["walk-in", "drive-through"]
-                    : filter["walk-in"]
-                    ? ["walk-in"]
-                    : ["drive-through"];
-            filteredFeatures = filteredFeatures.filter((feature) => {
-                return serviceTypeFilter.includes(
-                    feature.properties["SERVICE_FORMAT"]
-                );
-            });
-        }
-        if (filter["all-ages"]) {
-            filteredFeatures = filteredFeatures.filter((feature) => {
-                return feature.properties["AGE_LIMIT"] === "all ages";
-            });
-        }
-        setData({ ...data, features: filteredFeatures });
+    const filterChangeHandler = (filteredData) => {
+        setData(filteredData);
     };
 
     useEffect(() => {
@@ -51,7 +27,7 @@ const DesktopSidePanel = (props) => {
                     </div>
                 </div>
                 <div className="drawer-search">
-                    <Search onFilter={filterChangeHandler} />
+                    <Search onFilter={filterChangeHandler} data={props.data} />
                 </div>
                 <div className="testing-site-list">
                     <SiteList map={props.map} data={data} />

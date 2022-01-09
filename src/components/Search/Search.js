@@ -17,7 +17,31 @@ const Search = (props) => {
             [event.target.innerText]: !filter[event.target.innerText],
         };
         setFilter(newFilter);
-        props.onFilter(newFilter);
+        let filteredFeatures = props.data.features;
+        if (newFilter.open) {
+            filteredFeatures = filteredFeatures.filter((feature) => {
+                return feature.properties["OPEN_STATUS"] === "open";
+            });
+        }
+        if (newFilter["walk-in"] || newFilter["drive-through"]) {
+            const serviceTypeFilter =
+                newFilter["walk-in"] === newFilter["drive-through"]
+                    ? ["walk-in", "drive-through"]
+                    : newFilter["walk-in"]
+                    ? ["walk-in"]
+                    : ["drive-through"];
+            filteredFeatures = filteredFeatures.filter((feature) => {
+                return serviceTypeFilter.includes(
+                    feature.properties["SERVICE_FORMAT"]
+                );
+            });
+        }
+        if (newFilter["all-ages"]) {
+            filteredFeatures = filteredFeatures.filter((feature) => {
+                return feature.properties["AGE_LIMIT"] === "all ages";
+            });
+        }
+        props.onFilter({ ...props.data, features: filteredFeatures });
     };
 
     const inputFieldId = Math.floor(Math.random() * 10000);
