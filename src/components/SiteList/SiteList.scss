@@ -8,6 +8,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .no-results {
         padding: $s4 $s8;
@@ -28,8 +30,10 @@
     }
 
     .list-item {
+        max-width: 400px;
+        width: 100%;
         border-bottom: 2px solid $cp-grey-100;
-        padding: $s2 $s8;
+        padding: $s2;
         order: 2;
 
         &__header {
