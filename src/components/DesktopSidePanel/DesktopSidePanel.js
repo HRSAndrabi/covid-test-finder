@@ -32,14 +32,6 @@ const DesktopSidePanel = (props) => {
     return (
         <div className="desktop-drawer">
             <div className="drawer-inner">
-                <div className="drawer-hero">
-                    <div className="drawer-hero__header">
-                        COVID-19 test finder
-                    </div>
-                    <div className="drawer-hero__links">
-                        <MdLink /> covidtestnearme.app
-                    </div>
-                </div>
                 <div className="drawer-search">
                     <Search
                         data={props.data}
@@ -56,6 +48,49 @@ const DesktopSidePanel = (props) => {
                 </div>
                 <div className="testing-site-list">
                     <SiteList map={props.map} data={data} />
+                </div>
+                <div className="drawer-attribution">
+                    {" "}
+                    Visualized by{" "}
+                    <a
+                        href="https://twitter.com/hrs_andrabi"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        @hrs_andrabi
+                    </a>
+                    . Data from{" "}
+                    <a
+                        href="https://www.dhhs.vic.gov.au/"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        dhhs.vic.gov.au
+                    </a>
+                    ,{" "}
+                    <a
+                        href="https://data.gov.au/"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        data.gov.au
+                    </a>
+                    . Mapping{" "}
+                    <a
+                        href="https://www.mapbox.com/about/maps/"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        © Mapbox
+                    </a>{" "}
+                    <a
+                        href="https://www.openstreetmap.org/copyright"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        © OpenStreetMap
+                    </a>
+                    . Buy me a coffee ☕
                 </div>
             </div>
         </div>

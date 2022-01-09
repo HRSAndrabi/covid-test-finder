@@ -10,36 +10,34 @@
         display: flex;
         flex-direction: column;
 
-        .drawer-hero {
+        .drawer-attribution {
             background-color: #fff;
-            border-bottom: 2px solid $cp-grey-100;
-            padding: $s4 $s8;
+            padding: $s2;
             z-index: 3;
+            background-color: #fff;
+            color: $cp-grey-700;
+            font-size: 0.8rem;
+            line-height: 1.2rem;
+            padding-top: $s2;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0px -2px 15px 0px rgba(0, 0, 0, 0.2);
 
-            &__header {
+            a {
+                border-bottom: 1px solid $cp-grey-900;
                 color: $cp-grey-900;
-                font-size: 1.5rem;
-                font-weight: 500;
-            }
-            &__links {
-                padding-top: $s1;
-                display: flex;
-                align-items: center;
-                gap: $s1;
+                display: inline-block;
+                text-decoration: none;
             }
         }
 
         .drawer-search {
             background-color: #fff;
-            border-bottom: 2px solid $cp-grey-100;
             padding: $s2;
             box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.2);
-            // clip-path: inset(0px 0px -100px 0px);
             z-index: 2;
         }
 
         .testing-site-list {
-            // margin-top: $s3;
             background-color: #fff;
             flex: 1 1 auto;
             min-height: 0px;
