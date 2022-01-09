@@ -14,6 +14,7 @@
             background-color: #fff;
             border-bottom: 2px solid $cp-grey-100;
             padding: $s4 $s8;
+            z-index: 3;
 
             &__header {
                 color: $cp-grey-900;
@@ -32,10 +33,14 @@
             background-color: #fff;
             border-bottom: 2px solid $cp-grey-100;
             padding: $s2;
+            box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.2);
+            // clip-path: inset(0px 0px -100px 0px);
+            z-index: 2;
         }
 
         .testing-site-list {
-            background-color: rgb(253, 253, 253);
+            // margin-top: $s3;
+            background-color: #fff;
             flex: 1 1 auto;
             min-height: 0px;
             overflow-y: auto;

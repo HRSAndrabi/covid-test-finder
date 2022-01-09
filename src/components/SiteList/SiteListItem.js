@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Chip } from "@mui/material";
-import { MdNearMe, MdCallEnd, MdLink } from "react-icons/md";
+import { MdNearMe, MdCall, MdLink, MdEvent } from "react-icons/md";
 import { featureClickHandler } from "../Map/Interactivity/Interactivity";
+import { Fab } from "@mui/material";
 
 const SiteListItem = (props) => {
     const [collapsed, setCollapsed] = useState(true);
@@ -72,78 +73,152 @@ const SiteListItem = (props) => {
                     </div>
                 </div>
                 <div className="list-item__body">
-                    {props.feature.properties["OPEN_STATUS"] !== "unknown" ? (
-                        <table className="site-hours">
-                            <tbody>
-                                <tr>
-                                    <td className="left">Monday</td>
-                                    <td className="right">
-                                        {props.feature.properties["MO_START"] &&
-                                        props.feature.properties["MO_END"]
-                                            ? `${props.feature.properties["MO_START"]} to ${props.feature.properties["MO_END"]}`.toLowerCase()
-                                            : "closed"}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="left">Tuesday</td>
-                                    <td className="right">
-                                        {props.feature.properties["TU_START"] &&
-                                        props.feature.properties["TU_END"]
-                                            ? `${props.feature.properties["TU_START"]} to ${props.feature.properties["TU_END"]}`.toLowerCase()
-                                            : "closed"}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="left">Wednesday</td>
-                                    <td className="right">
-                                        {props.feature.properties["WE_START"] &&
-                                        props.feature.properties["WE_END"]
-                                            ? `${props.feature.properties["WE_START"]} to ${props.feature.properties["WE_END"]}`.toLowerCase()
-                                            : "closed"}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="left">Thursday</td>
-                                    <td className="right">
-                                        {props.feature.properties["TH_START"] &&
-                                        props.feature.properties["TH_END"]
-                                            ? `${props.feature.properties["TH_START"]} to ${props.feature.properties["TH_END"]}`.toLowerCase()
-                                            : "closed"}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="left">Friday</td>
-                                    <td className="right">
-                                        {props.feature.properties["FR_START"] &&
-                                        props.feature.properties["FR_END"]
-                                            ? `${props.feature.properties["FR_START"]} to ${props.feature.properties["FR_END"]}`.toLowerCase()
-                                            : "closed"}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="left">Saturday</td>
-                                    <td className="right">
-                                        {props.feature.properties["SA_START"] &&
-                                        props.feature.properties["SA_END"]
-                                            ? `${props.feature.properties["SA_START"]} to ${props.feature.properties["SA_END"]}`.toLowerCase()
-                                            : "closed"}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="left">Sunday</td>
-                                    <td className="right">
-                                        {props.feature.properties["SU_START"] &&
-                                        props.feature.properties["SU_END"]
-                                            ? `${props.feature.properties["SU_START"]} to ${props.feature.properties["SU_END"]}`.toLowerCase()
-                                            : "closed"}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    ) : (
-                        <div className="site-hours--unavailable">
-                            Call to confirm opening hours.
+                    <div className="body-item--noflex">
+                        <div className="body-item__heading">Opening hours:</div>
+                        <div id="site-hours" className="body-item__content">
+                            {props.feature.properties["OPEN_STATUS"] !==
+                            "unknown" ? (
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td className="left">Monday</td>
+                                            <td className="right">
+                                                {props.feature.properties[
+                                                    "MO_START"
+                                                ] &&
+                                                props.feature.properties[
+                                                    "MO_END"
+                                                ]
+                                                    ? `${props.feature.properties["MO_START"]} to ${props.feature.properties["MO_END"]}`.toLowerCase()
+                                                    : "closed"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="left">Tuesday</td>
+                                            <td className="right">
+                                                {props.feature.properties[
+                                                    "TU_START"
+                                                ] &&
+                                                props.feature.properties[
+                                                    "TU_END"
+                                                ]
+                                                    ? `${props.feature.properties["TU_START"]} to ${props.feature.properties["TU_END"]}`.toLowerCase()
+                                                    : "closed"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="left">Wednesday</td>
+                                            <td className="right">
+                                                {props.feature.properties[
+                                                    "WE_START"
+                                                ] &&
+                                                props.feature.properties[
+                                                    "WE_END"
+                                                ]
+                                                    ? `${props.feature.properties["WE_START"]} to ${props.feature.properties["WE_END"]}`.toLowerCase()
+                                                    : "closed"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="left">Thursday</td>
+                                            <td className="right">
+                                                {props.feature.properties[
+                                                    "TH_START"
+                                                ] &&
+                                                props.feature.properties[
+                                                    "TH_END"
+                                                ]
+                                                    ? `${props.feature.properties["TH_START"]} to ${props.feature.properties["TH_END"]}`.toLowerCase()
+                                                    : "closed"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="left">Friday</td>
+                                            <td className="right">
+                                                {props.feature.properties[
+                                                    "FR_START"
+                                                ] &&
+                                                props.feature.properties[
+                                                    "FR_END"
+                                                ]
+                                                    ? `${props.feature.properties["FR_START"]} to ${props.feature.properties["FR_END"]}`.toLowerCase()
+                                                    : "closed"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="left">Saturday</td>
+                                            <td className="right">
+                                                {props.feature.properties[
+                                                    "SA_START"
+                                                ] &&
+                                                props.feature.properties[
+                                                    "SA_END"
+                                                ]
+                                                    ? `${props.feature.properties["SA_START"]} to ${props.feature.properties["SA_END"]}`.toLowerCase()
+                                                    : "closed"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="left">Sunday</td>
+                                            <td className="right">
+                                                {props.feature.properties[
+                                                    "SU_START"
+                                                ] &&
+                                                props.feature.properties[
+                                                    "SU_END"
+                                                ]
+                                                    ? `${props.feature.properties["SU_START"]} to ${props.feature.properties["SU_END"]}`.toLowerCase()
+                                                    : "closed"}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <div className="site-hours--unavailable">
+                                    Hours unavailable, call to confirm.
+                                </div>
+                            )}
                         </div>
+                    </div>
+                    <a
+                        className="body-item"
+                        href={`http://maps.google.com/?q=${props.feature.properties["ADDRESS_SUBURB_POSTCODE"]}`}
+                        target="_blank"
+                    >
+                        <div className="body-item__icon">
+                            <MdNearMe />
+                        </div>
+                        <div className="body-item__content">
+                            {`${props.feature.properties["ADDRESS"]}, ${props.feature.properties["SUBURB"]}, ${props.feature.properties["POSTCODE"]}`}
+                        </div>
+                    </a>
+                    {props.feature.properties["PHONE"] && (
+                        <a
+                            className="body-item"
+                            href={`tel:${props.feature.properties["PHONE"]}`}
+                            target="_blank"
+                        >
+                            <div className="body-item__icon">
+                                <MdCall />
+                            </div>
+                            <div id="site-hours" className="body-item__content">
+                                {props.feature.properties["PHONE"]}
+                            </div>
+                        </a>
+                    )}
+                    {props.feature.properties["WEBSITE"] && (
+                        <a
+                            className="body-item"
+                            href={props.feature.properties["WEBSITE"]}
+                            target="_blank"
+                        >
+                            <div className="body-item__icon">
+                                <MdLink />
+                            </div>
+                            <div id="site-hours" className="body-item__content">
+                                {props.feature.properties["WEBSITE"]}
+                            </div>
+                        </a>
                     )}
                 </div>
                 {/* <div className="list-item__footer">
