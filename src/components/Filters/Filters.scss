@@ -1,0 +1,11 @@
+@import "src/App.scss";
+
+.filters {
+    padding-top: $s2;
+    display: flex;
+    gap: $s1;
+
+    &__label {
+        font-size: 0.8rem;
+    }
+}

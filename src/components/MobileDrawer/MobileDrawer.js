@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./MobileDrawer.scss";
 import SiteList from "../SiteList/SiteList";
 import Search from "../Search/Search";
+import Filters from "../Filters/Filters";
 
 const MobileDrawer = (props) => {
     const drawerOpenHandler = () => {
@@ -20,14 +21,15 @@ const MobileDrawer = (props) => {
     };
 
     return (
-        <div className="mobile-drawer" tabIndex={0} onClick={drawerOpenHandler}>
+        <div className="mobile-drawer" tabIndex={0}>
             <div className="drawer-preview">
-                <div className="handle"></div>
+                <div className="handle" onClick={drawerOpenHandler}></div>
                 <div className="drawer-search">
-                    <Search
-                        onFilter={filterChangeHandler}
+                    <Search data={props.data} map={props.map} />
+                    <Filters
                         data={props.data}
                         map={props.map}
+                        onFilter={filterChangeHandler}
                     />
                 </div>
             </div>
