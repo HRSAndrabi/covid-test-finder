@@ -54,7 +54,6 @@ function Map(props) {
 
         fetchVicData()
             .then((data) => {
-                console.log(data);
                 props.initialiseData(data);
                 map.current.addSource("regionBounds", {
                     type: "vector",
