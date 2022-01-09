@@ -21,14 +21,13 @@ function App() {
 
     const initialiseMap = (map) => {
         setMap(map);
-        console.log(map.current);
     };
 
     const initialiseData = (data) => {
         const sortedFeatures = data.features.sort((featureA, featureB) => {
             if (
-                featureA.properties["IS_OPEN"] ===
-                featureB.properties["IS_OPEN"]
+                featureA.properties["OPEN_STATUS"] ===
+                featureB.properties["OPEN_STATUS"]
             ) {
                 return featureA.properties["SITE_NAME"] <
                     featureB.properties["SITE_NAME"]
@@ -38,8 +37,8 @@ function App() {
                     ? 1
                     : 0;
             }
-            const featureAOpen = featureA.properties["IS_OPEN"];
-            const featureBOpen = featureB.properties["IS_OPEN"];
+            const featureAOpen = featureA.properties["OPEN_STATUS"];
+            const featureBOpen = featureB.properties["OPEN_STATUS"];
             return featureAOpen === "open"
                 ? -1
                 : featureAOpen === "unknown" && featureBOpen === "closed"
@@ -51,10 +50,11 @@ function App() {
     };
 
     useEffect(() => {
+        setIsDesktop(window.innerWidth > 850);
         window.addEventListener("resize", () => {
-            setIsDesktop(window.innerWidth > 900);
+            setIsDesktop(window.innerWidth > 850);
         });
-    });
+    }, []);
 
     return (
         <div className="App">

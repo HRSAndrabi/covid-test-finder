@@ -28,14 +28,15 @@ const SiteListItem = (props) => {
                 <div className="site-properties">
                     <Chip
                         label={
-                            props.feature.properties["IS_OPEN"] === "unknown"
+                            props.feature.properties["OPEN_STATUS"] ===
+                            "unknown"
                                 ? "Hours unavailable"
-                                : props.feature.properties["IS_OPEN"]
+                                : props.feature.properties["OPEN_STATUS"]
                         }
                         color={
-                            props.feature.properties["IS_OPEN"] === "open"
+                            props.feature.properties["OPEN_STATUS"] === "open"
                                 ? "success"
-                                : props.feature.properties["IS_OPEN"] ===
+                                : props.feature.properties["OPEN_STATUS"] ===
                                   "unknown"
                                 ? "warning"
                                 : "error"
@@ -66,7 +67,7 @@ const SiteListItem = (props) => {
                 </div>
             </div>
             <div className="list-item__body">
-                {props.feature.properties["IS_OPEN"] !== "unknown" ? (
+                {props.feature.properties["OPEN_STATUS"] !== "unknown" ? (
                     <table className="site-hours">
                         <tbody>
                             <tr>

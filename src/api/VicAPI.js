@@ -118,7 +118,7 @@ export async function fetchVicData() {
                             : null;
                     }
                 });
-                feature.properties["IS_OPEN"] = checkOpen(feature);
+                feature.properties["OPEN_STATUS"] = checkOpen(feature);
                 if (!uidList.includes(feature.properties["ID"])) {
                     output.features.push(feature);
                     uidList.push(feature.properties["ID"]);

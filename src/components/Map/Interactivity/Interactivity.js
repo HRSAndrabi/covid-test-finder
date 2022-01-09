@@ -7,15 +7,12 @@ const marker = new mapboxgl.Marker({
 });
 
 export function clickHandler(event, map) {
-    console.log("start query");
     const clickedFeature = map.current.queryRenderedFeatures(event.point, {
         layers: ["all-vic-testing-sites"],
     });
-    console.log("end query");
     if (clickedFeature.length === 1) {
         const feature = clickedFeature[0];
         featureClickHandler(feature, map);
-        console.log("return");
         return { drawerOpen: true };
     } else return { drawerOpen: false };
 }
