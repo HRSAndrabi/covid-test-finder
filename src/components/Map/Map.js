@@ -99,7 +99,7 @@ function Map(props) {
                             "case",
                             ["==", ["get", "SERVICE_FORMAT"], "walk-in"],
                             "#2d70ec",
-                            "#00bfa5",
+                            "#2e2e2e",
                         ],
                         "icon-halo-width": 15,
                         "icon-opacity": 0.9,
