@@ -42,8 +42,8 @@ function App() {
             return featureAOpen === "open"
                 ? -1
                 : featureAOpen === "unknown" && featureBOpen === "closed"
-                ? -1
-                : 1;
+                ? 1
+                : -1;
         });
         const sortedData = { ...data, features: sortedFeatures };
         setData(sortedData);

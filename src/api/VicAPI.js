@@ -119,7 +119,12 @@ export async function fetchVicData() {
                     }
                 });
                 feature.properties["OPEN_STATUS"] = checkOpen(feature);
-                if (!uidList.includes(feature.properties["ID"])) {
+                if (
+                    !uidList.includes(feature.properties["ID"]) &&
+                    feature.properties["ADDRESS"] &&
+                    feature.geometry.coordinates[0] &&
+                    feature.geometry.coordinates[1]
+                ) {
                     output.features.push(feature);
                     uidList.push(feature.properties["ID"]);
                 }
