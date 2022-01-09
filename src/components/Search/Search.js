@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdSearch } from "react-icons/md";
 import { Chip } from "@mui/material";
+import "./Search.scss";
 
 const Search = (props) => {
     const [filter, setFilter] = useState({
