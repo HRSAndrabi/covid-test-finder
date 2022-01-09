@@ -1,0 +1,51 @@
+@import "./src/App.scss";
+
+.mobile-drawer {
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    background-color: #fff;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+
+    .drawer-preview {
+        height: 80px;
+        padding: $s3;
+        border-bottom: 2px solid $cp-grey-100;
+
+        .handle {
+            width: 30px;
+            height: 6px;
+            background-color: $cp-grey-300;
+            border-radius: 3px;
+            position: absolute;
+            top: 8px;
+            left: calc(50% - 15px);
+        }
+    }
+
+    .drawer-content {
+        height: 0;
+        transition: margin 0.1s ease-in-out;
+
+        &__inner {
+            height: 300px;
+            padding-top: $s2;
+            display: flex;
+
+            .testing-site-list {
+                background-color: rgb(253, 253, 253);
+                flex: 1 1 auto;
+                min-height: 0px;
+                overflow-y: auto;
+            }
+        }
+    }
+
+    .drawer-content.open {
+        margin-bottom: 300px;
+    }
+}

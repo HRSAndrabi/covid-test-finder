@@ -96,6 +96,7 @@ export async function fetchVicData() {
         .then((res) => res.text())
         .then((res) => {
             const data = JSON.parse(res.substring(47).slice(0, -2));
+            const uidList = [];
             data.table.rows.forEach((row) => {
                 const feature = {
                     type: "Feature",
@@ -118,7 +119,10 @@ export async function fetchVicData() {
                     }
                 });
                 feature.properties["IS_OPEN"] = checkOpen(feature);
-                output.features.push(feature);
+                if (!uidList.includes(feature.properties["ID"])) {
+                    output.features.push(feature);
+                    uidList.push(feature.properties["ID"]);
+                }
             });
         });
     return output;

@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import "./SidePanel.scss";
+import { useState } from "react";
+import "./DesktopSidePanel.scss";
 import { MdSearch } from "react-icons/md";
-import _uniqueId from "lodash/uniqueId";
 import { MdLink } from "react-icons/md";
 import { Chip } from "@mui/material";
+import SiteList from "../SiteList/SiteList";
 
-const SidePanel = (props) => {
-    const [drawerOpen, setDrawerOpen] = useState(props.drawerOpen);
+const DesktopSidePanel = (props) => {
+    const [data, setData] = useState(props.data);
     const [filter, setFilter] = useState({
         open: false,
         "walk-in": false,
@@ -14,25 +14,12 @@ const SidePanel = (props) => {
         "all-ages": false,
     });
 
-    const drawerOpenHandler = () => {
-        props.drawerOpenHandler(true);
-    };
-
-    const drawerCloseHandler = () => {
-        setDrawerOpen(false);
-    };
-
     const filterChangeHandler = (event) => {
         setFilter({
             ...filter,
             [event.target.innerText]: !filter[event.target.innerText],
         });
     };
-
-    useEffect(() => {
-        setDrawerOpen(props.drawerOpen);
-        return () => {};
-    }, [props]);
 
     const inputFieldId = Math.floor(Math.random() * 10000);
     return (
@@ -95,32 +82,7 @@ const SidePanel = (props) => {
                         </div>
                     </div>
                     <div className="testing-site-list">
-                        {props.renderedFeatures}
-                    </div>
-                </div>
-            </div>
-            <div
-                className="mobile-drawer"
-                tabIndex={0}
-                onClick={drawerOpenHandler}
-                // onBlur={drawerCloseHandler}
-            >
-                <div className="drawer-preview">
-                    <div className="handle"></div>
-                    <div className="search">
-                        <MdSearch className="search__icon" />
-                        <input
-                            id="search__input"
-                            className="search__input"
-                            type="text"
-                            name={inputFieldId}
-                            placeholder="Search testing sites"
-                        />
-                    </div>
-                </div>
-                <div className={`drawer-content ${drawerOpen ? "open" : ""}`}>
-                    <div className="drawer-content__inner">
-                        {props.renderedFeatures}
+                        <SiteList map={props.map} data={props.data} />
                     </div>
                 </div>
             </div>
@@ -128,4 +90,4 @@ const SidePanel = (props) => {
     );
 };
 
-export default SidePanel;
+export default DesktopSidePanel;

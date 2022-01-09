@@ -5,14 +5,7 @@ import mapboxgl from "!mapbox-gl";
 import { fetchVicData } from "../../api/VicAPI";
 import HaAccountBox from "./Symbols/HaAccountBox.png";
 import HaGarage from "./Symbols/HaGarage.png";
-import {
-    moveStartHandler,
-    moveEndHandler,
-    filterKeyUp,
-    initialRender,
-    clickHandler,
-} from "./Interactivity/Interactivity";
-import { click } from "@testing-library/user-event/dist/click";
+import { clickHandler } from "./Interactivity/Interactivity";
 
 const { REACT_APP_MAPBOX_API_TOKEN } = process.env;
 mapboxgl.accessToken = REACT_APP_MAPBOX_API_TOKEN;
@@ -62,6 +55,7 @@ function Map(props) {
         fetchVicData()
             .then((data) => {
                 console.log(data);
+                props.initialiseData(data);
                 map.current.addSource("regionBounds", {
                     type: "vector",
                     url: "mapbox://hassdaddy3.8h1ha029",
@@ -119,53 +113,13 @@ function Map(props) {
                 // Interactivity -------------------------------------------------
                 // ---------------------------------------------------------------
                 const filterEl = document.getElementById("search__input");
-                // Defined sperately because we have to remove this function from
-                // the mouseend event later on
-                function onMoveEnd(event) {
-                    if (filterEl.value.length === 0) {
-                        const featureObj = moveEndHandler(event, map);
-                        visibleTestingSites = featureObj.uniqueFeatures;
-                        props.renderedFeaturesChangeHandler(
-                            featureObj.renderedFeatures
-                        );
-                    }
-                }
 
-                // Initally populating testing site list
-                let featureObj = initialRender(map, data);
-                props.renderedFeaturesChangeHandler(
-                    featureObj.renderedFeatures
-                );
-                let visibleTestingSites = featureObj.uniqueFeatures;
-
-                // Event listeners
-                map.current.on("movestart", (event) => {
-                    moveStartHandler(event, map, filterEl);
-                });
-                map.current.on("moveend", onMoveEnd);
-                filterEl.addEventListener("input", (event) => {
-                    const featureObj = filterKeyUp(event, map, filterEl, data);
-                    props.drawerOpenHandler(featureObj.drawerOpen);
-                    visibleTestingSites = featureObj.uniqueFeatures;
-                    props.renderedFeaturesChangeHandler(
-                        featureObj.renderedFeatures
-                    );
-                });
                 map.current.on("click", (event) => {
-                    // Disable moveend event because it triggers when 'fly-to' finishes
-                    map.current.off("moveend", onMoveEnd);
-                    map.current.on("moveend", () => {
-                        map.current.on("moveend", onMoveEnd);
-                    });
                     const resultObj = clickHandler(event, map);
                     props.drawerOpenHandler(resultObj.drawerOpen);
-                    if (resultObj.renderedFeatures) {
-                        props.renderedFeaturesChangeHandler(
-                            resultObj.renderedFeatures
-                        );
-                    }
                 });
             });
+        props.initialiseMap(map);
 
         // Clean up on unmount
         return () => map.current.remove();
