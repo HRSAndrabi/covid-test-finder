@@ -19,8 +19,8 @@ const SiteList = (props) => {
                 <div className="no-results">
                     <div className="no-results__heading">No results found</div>
                     <div className="no-results__body">
-                        We found no testing sites matching your search. Try
-                        other keywords, or explore the map to populate results.
+                        Sorry, we found no testing sites matching your search
+                        and selected filters.
                     </div>
                 </div>
             )}
