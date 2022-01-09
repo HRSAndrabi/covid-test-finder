@@ -141,7 +141,7 @@ const SiteListItem = (props) => {
                     </div>
                 )}
             </div>
-            <div className="list-item__footer">
+            {/* <div className="list-item__footer">
                 {props.feature.properties["ADDRESS_SUBURB_POSTCODE"] && (
                     <a
                         href={`http://props.maps.google.com/?q=${props.feature.properties["ADDRESS_SUBURB_POSTCODE"]}`}
@@ -169,7 +169,7 @@ const SiteListItem = (props) => {
                         <MdLink /> website
                     </a>
                 )}
-            </div>
+            </div> */}
         </li>
     );
 };

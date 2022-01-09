@@ -48,4 +48,5 @@ export function featureClickHandler(feature, map) {
         `site-${feature.properties["ID"]}`
     );
     selectedListing.classList.add("expanded");
+    selectedListing.scrollIntoView();
 }
