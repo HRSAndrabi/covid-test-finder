@@ -27,7 +27,11 @@ const DesktopSidePanel = (props) => {
                     </div>
                 </div>
                 <div className="drawer-search">
-                    <Search onFilter={filterChangeHandler} data={props.data} />
+                    <Search
+                        onFilter={filterChangeHandler}
+                        data={props.data}
+                        map={props.map}
+                    />
                 </div>
                 <div className="testing-site-list">
                     <SiteList map={props.map} data={data} />

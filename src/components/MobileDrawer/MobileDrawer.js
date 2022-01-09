@@ -24,7 +24,11 @@ const MobileDrawer = (props) => {
             <div className="drawer-preview">
                 <div className="handle"></div>
                 <div className="drawer-search">
-                    <Search onFilter={filterChangeHandler} data={props.data} />
+                    <Search
+                        onFilter={filterChangeHandler}
+                        data={props.data}
+                        map={props.map}
+                    />
                 </div>
             </div>
             <div className={`drawer-content ${props.drawerOpen ? "open" : ""}`}>

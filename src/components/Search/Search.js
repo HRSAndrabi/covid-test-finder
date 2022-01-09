@@ -20,10 +20,14 @@ const Search = (props) => {
         };
         setFilter(newFilter);
         let filteredFeatures = props.data.features;
+        const mapFilters = [];
         if (newFilter.open) {
+            mapFilters.push(["==", ["get", "OPEN_STATUS"], "open"]);
             filteredFeatures = filteredFeatures.filter((feature) => {
                 return feature.properties["OPEN_STATUS"] === "open";
             });
+        } else {
+            mapFilters.push(["has", "OPEN_STATUS"]);
         }
         if (newFilter["walk-in"] || newFilter["drive-through"]) {
             const serviceTypeFilter =
@@ -37,13 +41,26 @@ const Search = (props) => {
                     feature.properties["SERVICE_FORMAT"]
                 );
             });
+            mapFilters.push([
+                "any",
+                ...serviceTypeFilter.map((acceptedValue) => {
+                    return ["==", ["get", "SERVICE_FORMAT"], acceptedValue];
+                }),
+            ]);
         }
         if (newFilter["all-ages"]) {
             filteredFeatures = filteredFeatures.filter((feature) => {
                 return feature.properties["AGE_LIMIT"] === "all ages";
             });
+            mapFilters.push(["==", ["get", "AGE_LIMIT"], "all ages"]);
+        } else {
+            mapFilters.push(["has", "AGE_LIMIT"]);
         }
         props.onFilter({ ...props.data, features: filteredFeatures });
+        props.map.current.setFilter("all-vic-testing-sites", [
+            "all",
+            ...mapFilters,
+        ]);
     };
 
     const inputFieldId = Math.floor(Math.random() * 10000);
