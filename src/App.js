@@ -19,8 +19,8 @@ function App() {
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    const drawerOpenHandler = (drawerOpen) => {
-        setDrawerOpen(drawerOpen);
+    const drawerOpenHandler = () => {
+        setDrawerOpen(!drawerOpen);
     };
 
     const initialiseMap = (map) => {
