@@ -60,13 +60,13 @@ const MobileDrawer = (props) => {
                         onFilter={filterChangeHandler}
                     />
                 </div>
-                <div className="drawer-status-bar">
+                {/* <div className="drawer-status-bar">
                     <StatusBar
                         data={props.data}
                         onRefresh={refreshHandler}
                         lastUpdated={props.lastUpdated}
                     />
-                </div>
+                </div> */}
             </div>
             <div className={`drawer-content ${props.drawerOpen ? "open" : ""}`}>
                 <div className="drawer-content__inner">
