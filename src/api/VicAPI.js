@@ -19,7 +19,7 @@ function cleanValue(value, key) {
         cleanedValue = cleanedValue.trim().replace("~", "");
     }
     if (key === "SITE_NAME") {
-        cleanedValue = value
+        cleanedValue = cleanedValue
             .replace("- Drive Through", "")
             .replace("- Walk Through", "")
             .replace("- Appointment only", "")
@@ -29,6 +29,8 @@ function cleanValue(value, key) {
             .replace("(Star Health", "(Star Health)")
             .replace("( Cohealth", "(Cohealth)")
             .replace("ACL", "Australian Clinical Labs (ACL)");
+    } else if (key === "PHONE") {
+        cleanedValue = cleanedValue.replace(/[^0-9 ]/g, "");
     } else if (key === "REQUIREMENTS") {
         cleanedValue = cleanedValue
             .replace(
