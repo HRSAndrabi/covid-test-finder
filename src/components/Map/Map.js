@@ -20,11 +20,11 @@ function Map(props) {
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/hassdaddy3/cky26t112263i14p52m7gq2om",
-            center: [133.354, -28.141],
-            zoom: 4.2,
+            center: [144.961, -36.874],
+            zoom: 6,
             maxBounds: [
-                [145.5 - 7, -40], // Southwest coordinates
-                [145.5 + 5.5, -33], // Northeast coordinates
+                [145.5 - 7, -44], // Southwest coordinates
+                [145.5 + 5.5, -30], // Northeast coordinates
             ],
             attributionControl: false,
         });
