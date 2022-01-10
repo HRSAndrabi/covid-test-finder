@@ -10,33 +10,6 @@
         display: flex;
         flex-direction: column;
 
-        .drawer-meta {
-            background: linear-gradient(
-                to right bottom,
-                rgb(0, 127, 255),
-                rgb(0, 89, 178) 120%
-            );
-            z-index: 10;
-            padding: 2px $s4;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: $s1;
-            color: #fff;
-            font-weight: 500;
-            font-size: 0.8rem;
-
-            &-item {
-                display: flex;
-                align-items: center;
-                gap: 2px;
-            }
-
-            &-item--alt {
-                color: #80bfff;
-            }
-        }
-
         .drawer-search {
             background-color: #fff;
             padding: $s2;
