@@ -38,7 +38,8 @@ const MobileDrawer = (props) => {
             const newTimeSinceUpdate = moment.duration(
                 props.lastUpdated.diff(moment())
             );
-            if (moment.duration(newTimeSinceUpdate.asHours() < -2)) {
+            if (moment.duration(newTimeSinceUpdate).asMinutes() < -120) {
+                console.log("Updating data ...");
                 props.refreshData();
             }
             setTimeSinceUpdate(newTimeSinceUpdate);

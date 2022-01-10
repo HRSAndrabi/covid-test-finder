@@ -55,6 +55,7 @@ function App() {
 
     const refreshData = () => {
         setRefresh(true);
+        setLastUpdated(moment());
     };
 
     useEffect(() => {
