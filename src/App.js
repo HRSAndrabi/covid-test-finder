@@ -5,6 +5,7 @@ import MobileDrawer from "./components/MobileDrawer/MobileDrawer";
 import Map from "./components/Map/Map";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
+import moment from "moment";
 
 function App() {
     const [data, setData] = useState({
@@ -14,6 +15,8 @@ function App() {
     const [map, setMap] = useState();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isDesktop, setIsDesktop] = useState();
+    const [lastUpdated, setLastUpdated] = useState(moment());
+    const [refresh, setRefresh] = useState(false);
 
     const drawerOpenHandler = (drawerOpen) => {
         setDrawerOpen(drawerOpen);
@@ -24,6 +27,7 @@ function App() {
     };
 
     const initialiseData = (data) => {
+        setRefresh(false);
         const sortedFeatures = data.features.sort((featureA, featureB) => {
             if (
                 featureA.properties["OPEN_STATUS"] ===
@@ -49,29 +53,44 @@ function App() {
         setData(sortedData);
     };
 
+    const refreshData = () => {
+        setRefresh(true);
+    };
+
     useEffect(() => {
         setIsDesktop(window.innerWidth > 850);
         window.addEventListener("resize", () => {
             setIsDesktop(window.innerWidth > 850);
         });
+        setLastUpdated(moment());
     }, []);
 
     return (
         <div className="App">
             <ThemeProvider theme={theme}>
-                {isDesktop && <DesktopSidePanel map={map} data={data} />}
+                {isDesktop && (
+                    <DesktopSidePanel
+                        map={map}
+                        data={data}
+                        lastUpdated={lastUpdated}
+                        refreshData={refreshData}
+                    />
+                )}
                 {!isDesktop && (
                     <MobileDrawer
                         drawerOpen={drawerOpen}
                         drawerOpenHandler={drawerOpenHandler}
                         map={map}
                         data={data}
+                        lastUpdated={lastUpdated}
+                        refreshData={refreshData}
                     />
                 )}
                 <Map
                     initialiseMap={initialiseMap}
                     initialiseData={initialiseData}
                     drawerOpenHandler={drawerOpenHandler}
+                    refresh={refresh}
                 />
             </ThemeProvider>
         </div>

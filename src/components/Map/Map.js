@@ -120,7 +120,7 @@ function Map(props) {
 
         // Clean up on unmount
         return () => map.current.remove();
-    }, []);
+    }, [props.refresh]);
 
     return <div ref={mapContainer} className="map-container" />;
 }

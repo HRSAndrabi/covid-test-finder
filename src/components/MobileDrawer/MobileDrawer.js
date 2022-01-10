@@ -4,6 +4,7 @@ import "./MobileDrawer.scss";
 import SiteList from "../SiteList/SiteList";
 import Search from "../Search/Search";
 import Filters from "../Filters/Filters";
+import moment from "moment";
 
 const MobileDrawer = (props) => {
     const drawerOpenHandler = () => {
@@ -17,11 +18,9 @@ const MobileDrawer = (props) => {
         "all-ages": false,
     });
     const [searchTerm, setSearchTerm] = useState(null);
-
-    useEffect(() => {
-        setData(props.data);
-        return () => {};
-    }, [props.data]);
+    const [timeSinceUpdate, setTimeSinceUpdate] = useState(
+        moment.duration(moment().diff(props.lastUpdated)).seconds()
+    );
 
     const filterChangeHandler = (filteredData) => {
         setData(filteredData.data);
@@ -32,6 +31,22 @@ const MobileDrawer = (props) => {
         setData(filteredData.data);
         setSearchTerm(filteredData.searchTerm);
     };
+
+    useEffect(() => {
+        setData(props.data);
+        const updateTimeStamp = setInterval(() => {
+            const newTimeSinceUpdate = moment.duration(
+                props.lastUpdated.diff(moment())
+            );
+            if (moment.duration(newTimeSinceUpdate.asHours() < -2)) {
+                props.refreshData();
+            }
+            setTimeSinceUpdate(newTimeSinceUpdate);
+        }, 60 * 1000);
+        return () => {
+            clearInterval(updateTimeStamp);
+        };
+    }, [props]);
 
     return (
         <div className="mobile-drawer" tabIndex={0}>

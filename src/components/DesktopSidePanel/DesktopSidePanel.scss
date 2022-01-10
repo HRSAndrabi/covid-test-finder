@@ -10,6 +10,49 @@
         display: flex;
         flex-direction: column;
 
+        .drawer-meta {
+            background: linear-gradient(
+                to right bottom,
+                rgb(0, 127, 255),
+                rgb(0, 89, 178) 120%
+            );
+            z-index: 10;
+            padding: 2px $s4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: $s1;
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.8rem;
+
+            &-item {
+                display: flex;
+                align-items: center;
+                gap: 2px;
+            }
+
+            &-item--alt {
+                color: #80bfff;
+            }
+        }
+
+        .drawer-search {
+            background-color: #fff;
+            padding: $s2;
+            box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px,
+                rgb(0 0 0 / 14%) 0px 3px 4px 0px,
+                rgb(0 0 0 / 12%) 0px 1px 8px 0px;
+            z-index: 2;
+        }
+
+        .testing-site-list {
+            background-color: #fff;
+            flex: 1 1 auto;
+            min-height: 0px;
+            overflow-y: auto;
+        }
+
         .drawer-attribution {
             background-color: #fff;
             padding: $s2;
@@ -20,7 +63,9 @@
             line-height: 1.2rem;
             padding-top: $s2;
             transition: all 0.2s ease-in-out;
-            box-shadow: 0px -2px 15px 0px rgba(0, 0, 0, 0.2);
+            box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px,
+                rgb(0 0 0 / 14%) 0px 3px 4px 0px,
+                rgb(0 0 0 / 12%) 0px 1px 8px 0px;
 
             a {
                 border-bottom: 1px solid $cp-grey-900;
@@ -28,20 +73,6 @@
                 display: inline-block;
                 text-decoration: none;
             }
-        }
-
-        .drawer-search {
-            background-color: #fff;
-            padding: $s2;
-            box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.2);
-            z-index: 2;
-        }
-
-        .testing-site-list {
-            background-color: #fff;
-            flex: 1 1 auto;
-            min-height: 0px;
-            overflow-y: auto;
         }
     }
 }
