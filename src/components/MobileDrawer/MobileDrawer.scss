@@ -12,8 +12,8 @@
     border-top-right-radius: 40px;
 
     .drawer-preview {
-        height: 100px;
-        padding: $s3;
+        height: 125px;
+        padding: $s3 0;
         border-bottom: 2px solid $cp-grey-100;
 
         .handle-container {
@@ -28,6 +28,15 @@
             position: absolute;
             top: 8px;
             left: calc(50% - 15px);
+        }
+        .drawer-search {
+            padding: 0 $s3;
+        }
+        .drawer-filters {
+            padding: 0 $s3;
+        }
+        .drawer-status-bar {
+            padding-top: $s2;
         }
     }
 

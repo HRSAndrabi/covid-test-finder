@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import "./DesktopSidePanel.scss";
 import SiteList from "../SiteList/SiteList";
 import Search from "../Search/Search";
+import StatusBar from "../StatusBar/StatusBar";
 import Filters from "../Filters/Filters";
 // import { ReactComponent as Logo } from "../../logo.svg";
-import { MdRefresh, MdPlace } from "react-icons/md";
-import moment from "moment";
 
 const DesktopSidePanel = (props) => {
     const [data, setData] = useState(props.data);
@@ -16,9 +15,6 @@ const DesktopSidePanel = (props) => {
         "all-ages": false,
     });
     const [searchTerm, setSearchTerm] = useState(null);
-    const [timeSinceUpdate, setTimeSinceUpdate] = useState(
-        moment.duration(moment().diff(props.lastUpdated)).seconds()
-    );
 
     const filterChangeHandler = (filteredData) => {
         setData(filteredData.data);
@@ -30,44 +26,23 @@ const DesktopSidePanel = (props) => {
         setSearchTerm(filteredData.searchTerm);
     };
 
+    const refreshHandler = () => {
+        props.onRefresh();
+    };
+
     useEffect(() => {
         setData(props.data);
-        const updateTimeStamp = setInterval(() => {
-            const newTimeSinceUpdate = moment.duration(
-                props.lastUpdated.diff(moment())
-            );
-            if (moment.duration(newTimeSinceUpdate).asMinutes() < -120) {
-                console.log("Updating data ...");
-                props.refreshData();
-            }
-            setTimeSinceUpdate(newTimeSinceUpdate);
-        }, 60 * 1000);
-        return () => {
-            clearInterval(updateTimeStamp);
-        };
     }, [props]);
 
     return (
         <div className="desktop-drawer">
             <div className="drawer-inner">
-                <div className="drawer-meta">
-                    {/* <div className="drawer-meta-item">COVID-19 test finder</div> */}
-                    <div className="drawer-meta-item">
-                        <MdPlace /> Found {props.data.features.length} testing
-                        sites
-                    </div>
-                    <div className="drawer-meta-item">
-                        <MdRefresh /> Last updated:{" "}
-                        {moment.duration(timeSinceUpdate).asSeconds() > -60
-                            ? "a few seconds ago"
-                            : moment.duration(timeSinceUpdate).asMinutes() > -60
-                            ? moment
-                                  .duration(timeSinceUpdate, "minutes")
-                                  .humanize(true)
-                            : moment
-                                  .duration(timeSinceUpdate, "hours")
-                                  .humanize(true)}
-                    </div>
+                <div className="drawer-status-bar">
+                    <StatusBar
+                        data={props.data}
+                        onRefresh={refreshHandler}
+                        lastUpdated={props.lastUpdated}
+                    />
                 </div>
                 <div className="drawer-search">
                     <Search

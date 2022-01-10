@@ -4,7 +4,7 @@ import "./MobileDrawer.scss";
 import SiteList from "../SiteList/SiteList";
 import Search from "../Search/Search";
 import Filters from "../Filters/Filters";
-import moment from "moment";
+import StatusBar from "../StatusBar/StatusBar";
 
 const MobileDrawer = (props) => {
     const drawerOpenHandler = () => {
@@ -18,9 +18,6 @@ const MobileDrawer = (props) => {
         "all-ages": false,
     });
     const [searchTerm, setSearchTerm] = useState(null);
-    const [timeSinceUpdate, setTimeSinceUpdate] = useState(
-        moment.duration(moment().diff(props.lastUpdated)).seconds()
-    );
 
     const filterChangeHandler = (filteredData) => {
         setData(filteredData.data);
@@ -32,21 +29,12 @@ const MobileDrawer = (props) => {
         setSearchTerm(filteredData.searchTerm);
     };
 
+    const refreshHandler = () => {
+        props.onRefresh();
+    };
+
     useEffect(() => {
         setData(props.data);
-        const updateTimeStamp = setInterval(() => {
-            const newTimeSinceUpdate = moment.duration(
-                props.lastUpdated.diff(moment())
-            );
-            if (moment.duration(newTimeSinceUpdate).asMinutes() < -120) {
-                console.log("Updating data ...");
-                props.refreshData();
-            }
-            setTimeSinceUpdate(newTimeSinceUpdate);
-        }, 60 * 1000);
-        return () => {
-            clearInterval(updateTimeStamp);
-        };
     }, [props]);
 
     return (
@@ -70,6 +58,13 @@ const MobileDrawer = (props) => {
                         map={props.map}
                         searchTerm={searchTerm}
                         onFilter={filterChangeHandler}
+                    />
+                </div>
+                <div className="drawer-status-bar">
+                    <StatusBar
+                        data={props.data}
+                        onRefresh={refreshHandler}
+                        lastUpdated={props.lastUpdated}
                     />
                 </div>
             </div>

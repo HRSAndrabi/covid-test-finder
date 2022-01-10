@@ -53,7 +53,7 @@ function App() {
         setData(sortedData);
     };
 
-    const refreshData = () => {
+    const refreshHandler = () => {
         setRefresh(true);
         setLastUpdated(moment());
     };
@@ -74,7 +74,7 @@ function App() {
                         map={map}
                         data={data}
                         lastUpdated={lastUpdated}
-                        refreshData={refreshData}
+                        onRefresh={refreshHandler}
                     />
                 )}
                 {!isDesktop && (
@@ -84,7 +84,7 @@ function App() {
                         map={map}
                         data={data}
                         lastUpdated={lastUpdated}
-                        refreshData={refreshData}
+                        onRefresh={refreshHandler}
                     />
                 )}
                 <Map
