@@ -7,6 +7,7 @@ import HaAccountBox from "./Symbols/HaAccountBox.png";
 import HaGarage from "./Symbols/HaGarage.png";
 import { clickHandler } from "./Interactivity/Interactivity";
 import { CircularProgress } from "@mui/material";
+// import Attribution from "./Attribution/Attribution";
 
 const { REACT_APP_MAPBOX_API_TOKEN } = process.env;
 mapboxgl.accessToken = REACT_APP_MAPBOX_API_TOKEN;
@@ -28,13 +29,13 @@ function Map(props) {
             ],
             attributionControl: false,
         });
-        map.current.addControl(
-            new mapboxgl.AttributionControl({
-                customAttribution: "Developed by @hrs_andrabi",
-                compact: true,
-            }),
-            "top-right"
-        );
+        // map.current.addControl(
+        //     new mapboxgl.AttributionControl({
+        //         customAttribution: "Developed by @hrs_andrabi",
+        //         compact: true,
+        //     }),
+        //     "top-right"
+        // );
         map.current.addControl(
             new mapboxgl.GeolocateControl({
                 positionOptions: {
@@ -127,6 +128,7 @@ function Map(props) {
 
     return (
         <div ref={mapContainer} className="map-container">
+            {/* <Attribution /> */}
             {isLoading && (
                 <div className="loading-overlay">
                     <div className="loading-overlay__content">
