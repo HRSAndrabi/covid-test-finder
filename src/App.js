@@ -41,9 +41,9 @@ function App() {
             const featureBOpen = featureB.properties["OPEN_STATUS"];
             return featureAOpen === "open"
                 ? -1
-                : featureAOpen === "unknown" && featureBOpen === "closed"
-                ? 1
-                : -1;
+                : featureBOpen === "unknown" && featureAOpen === "closed"
+                ? -1
+                : 1;
         });
         const sortedData = { ...data, features: sortedFeatures };
         setData(sortedData);
