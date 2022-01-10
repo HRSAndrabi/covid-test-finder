@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./DesktopSidePanel.scss";
-import { MdLink } from "react-icons/md";
 import SiteList from "../SiteList/SiteList";
 import Search from "../Search/Search";
 import Filters from "../Filters/Filters";

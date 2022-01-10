@@ -1,5 +1,5 @@
 /* eslint import/no-webpack-loader-syntax: off */
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import "./Map.scss";
 import mapboxgl from "!mapbox-gl";
 import { fetchVicData } from "../../api/VicAPI";
@@ -111,8 +111,6 @@ function Map(props) {
                 // ---------------------------------------------------------------
                 // Interactivity -------------------------------------------------
                 // ---------------------------------------------------------------
-                const filterEl = document.getElementById("search__input");
-
                 map.current.on("click", (event) => {
                     const resultObj = clickHandler(event, map);
                     props.drawerOpenHandler(resultObj.drawerOpen);

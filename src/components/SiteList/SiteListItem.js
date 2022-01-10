@@ -1,15 +1,10 @@
-import { useState } from "react";
 import { Chip } from "@mui/material";
-import { MdNearMe, MdCall, MdLink, MdEvent } from "react-icons/md";
+import { MdNearMe, MdCall, MdLink } from "react-icons/md";
 import { featureClickHandler } from "../Map/Interactivity/Interactivity";
-import { Fab } from "@mui/material";
 
 const SiteListItem = (props) => {
-    const [collapsed, setCollapsed] = useState(true);
-
     const clickHandler = () => {
         featureClickHandler(props.feature, props.map);
-        // setCollapsed(!collapsed);
     };
 
     return (
@@ -184,6 +179,7 @@ const SiteListItem = (props) => {
                         className="body-item"
                         href={`http://maps.google.com/?q=${props.feature.properties["ADDRESS_SUBURB_POSTCODE"]}`}
                         target="_blank"
+                        rel="noreferrer"
                     >
                         <div className="body-item__icon">
                             <MdNearMe />
@@ -197,6 +193,7 @@ const SiteListItem = (props) => {
                             className="body-item"
                             href={`tel:${props.feature.properties["PHONE"]}`}
                             target="_blank"
+                            rel="noreferrer"
                         >
                             <div className="body-item__icon">
                                 <MdCall />
@@ -211,6 +208,7 @@ const SiteListItem = (props) => {
                             className="body-item"
                             href={props.feature.properties["WEBSITE"]}
                             target="_blank"
+                            rel="noreferrer"
                         >
                             <div className="body-item__icon">
                                 <MdLink />
@@ -225,7 +223,7 @@ const SiteListItem = (props) => {
                 {props.feature.properties["ADDRESS_SUBURB_POSTCODE"] && (
                     <a
                         href={`http://props.maps.google.com/?q=${props.feature.properties["ADDRESS_SUBURB_POSTCODE"]}`}
-                        target="_blank"
+                        target="_blank" rel="noreferrer"
                         className="site-actions"
                     >
                         <MdNearMe /> directions
@@ -234,7 +232,7 @@ const SiteListItem = (props) => {
                 {props.feature.properties["PHONE"] && (
                     <a
                         href={`tel:${props.feature.properties["PHONE"]}`}
-                        target="_blank"
+                        target="_blank" rel="noreferrer"
                         className="site-actions"
                     >
                         <MdCallEnd /> phone
@@ -243,7 +241,7 @@ const SiteListItem = (props) => {
                 {props.feature.properties["WEBSITE"] && (
                     <a
                         href={props.feature.properties["WEBSITE"]}
-                        target="_blank"
+                        target="_blank" rel="noreferrer"
                         className="site-actions"
                     >
                         <MdLink /> website

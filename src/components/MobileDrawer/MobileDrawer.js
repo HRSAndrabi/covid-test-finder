@@ -52,6 +52,7 @@ const MobileDrawer = (props) => {
                     <Filters
                         data={props.data}
                         map={props.map}
+                        searchTerm={searchTerm}
                         onFilter={filterChangeHandler}
                     />
                 </div>
