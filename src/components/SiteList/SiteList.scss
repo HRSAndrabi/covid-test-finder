@@ -36,7 +36,18 @@
         width: 100%;
         border-bottom: 2px solid $cp-grey-100;
         padding: $s2;
+        transition: background-color 0.2s ease-in-out;
         order: 2;
+
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                background-color: $cp-grey-50;
+                cursor: pointer;
+                * {
+                    cursor: pointer;
+                }
+            }
+        }
 
         .list-item-inner {
             max-width: 400px;

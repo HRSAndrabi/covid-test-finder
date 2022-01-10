@@ -24,6 +24,7 @@
             flex: 1 1 auto;
             min-height: 0px;
             overflow-y: auto;
+            scroll-behavior: smooth;
         }
 
         .drawer-attribution {
