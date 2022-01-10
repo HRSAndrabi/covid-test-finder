@@ -59,7 +59,11 @@ const DesktopSidePanel = (props) => {
                     />
                 </div>
                 <div className="testing-site-list">
-                    <SiteList map={props.map} data={data} />
+                    <SiteList
+                        map={props.map}
+                        data={data}
+                        isLoading={props.isLoading}
+                    />
                 </div>
                 <div className="drawer-attribution">
                     {" "}

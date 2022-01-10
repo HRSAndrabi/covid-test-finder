@@ -17,6 +17,7 @@ function App() {
     const [isDesktop, setIsDesktop] = useState();
     const [lastUpdated, setLastUpdated] = useState(moment());
     const [refresh, setRefresh] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const drawerOpenHandler = (drawerOpen) => {
         setDrawerOpen(drawerOpen);
@@ -24,6 +25,7 @@ function App() {
 
     const initialiseMap = (map) => {
         setMap(map);
+        setIsLoading(false);
     };
 
     const initialiseData = (data) => {
@@ -54,6 +56,7 @@ function App() {
     };
 
     const refreshHandler = () => {
+        setIsLoading(true);
         setRefresh(true);
         setLastUpdated(moment());
     };
@@ -74,6 +77,7 @@ function App() {
                         map={map}
                         data={data}
                         lastUpdated={lastUpdated}
+                        isLoading={isLoading}
                         onRefresh={refreshHandler}
                     />
                 )}
@@ -84,6 +88,7 @@ function App() {
                         map={map}
                         data={data}
                         lastUpdated={lastUpdated}
+                        isLoading={isLoading}
                         onRefresh={refreshHandler}
                     />
                 )}

@@ -9,8 +9,13 @@
     display: flex;
     flex-direction: column;
 
+    .loading {
+        padding: $s2;
+        width: 100%;
+    }
+
     .no-results {
-        padding: $s4 $s8;
+        padding: $s4;
 
         &__heading {
             color: $cp-grey-900;

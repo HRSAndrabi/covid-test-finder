@@ -1,11 +1,12 @@
 /* eslint import/no-webpack-loader-syntax: off */
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./Map.scss";
 import mapboxgl from "!mapbox-gl";
 import { fetchVicData } from "../../api/VicAPI";
 import HaAccountBox from "./Symbols/HaAccountBox.png";
 import HaGarage from "./Symbols/HaGarage.png";
 import { clickHandler } from "./Interactivity/Interactivity";
+import { CircularProgress } from "@mui/material";
 
 const { REACT_APP_MAPBOX_API_TOKEN } = process.env;
 mapboxgl.accessToken = REACT_APP_MAPBOX_API_TOKEN;
@@ -13,6 +14,7 @@ mapboxgl.accessToken = REACT_APP_MAPBOX_API_TOKEN;
 function Map(props) {
     const mapContainer = useRef(null);
     const map = useRef(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         map.current = new mapboxgl.Map({
@@ -115,14 +117,25 @@ function Map(props) {
                     const resultObj = clickHandler(event, map);
                     props.drawerOpenHandler(resultObj.drawerOpen);
                 });
+                props.initialiseMap(map);
+                setIsLoading(false);
             });
-        props.initialiseMap(map);
 
         // Clean up on unmount
         return () => map.current.remove();
     }, [props.refresh]);
 
-    return <div ref={mapContainer} className="map-container" />;
+    return (
+        <div ref={mapContainer} className="map-container">
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="loading-overlay__content">
+                        <CircularProgress />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 }
 
 export default Map;
