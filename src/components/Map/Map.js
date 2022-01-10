@@ -114,6 +114,7 @@ function Map(props) {
                 // Interactivity -------------------------------------------------
                 // ---------------------------------------------------------------
                 map.current.on("click", (event) => {
+                    console.log("click");
                     const resultObj = clickHandler(event, map);
                     props.drawerOpenHandler(resultObj.drawerOpen);
                 });
