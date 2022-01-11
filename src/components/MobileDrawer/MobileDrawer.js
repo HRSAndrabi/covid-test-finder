@@ -4,7 +4,7 @@ import "./MobileDrawer.scss";
 import SiteList from "../SiteList/SiteList";
 import Search from "../Search/Search";
 import Filters from "../Filters/Filters";
-// import StatusBar from "../StatusBar/StatusBar";
+import StatusBar from "../StatusBar/StatusBar";
 
 const MobileDrawer = (props) => {
     const drawerOpenHandler = () => {
@@ -30,9 +30,9 @@ const MobileDrawer = (props) => {
         setSearchTerm(filteredData.searchTerm);
     };
 
-    // const refreshHandler = () => {
-    //     props.onRefresh();
-    // };
+    const refreshHandler = () => {
+        props.onRefresh();
+    };
 
     useEffect(() => {
         setData(props.data);
@@ -64,18 +64,18 @@ const MobileDrawer = (props) => {
                         onFilter={filterChangeHandler}
                     />
                 </div>
-                {/* <div className="drawer-status-bar">
-                    <StatusBar
-                        data={props.data}
-                        onRefresh={refreshHandler}
-                        lastUpdated={props.lastUpdated}
-                    />
-                </div> */}
             </div>
             <div className={`drawer-content ${props.drawerOpen ? "open" : ""}`}>
                 <div className="drawer-content__inner">
                     <div className="testing-site-list">
                         <SiteList map={props.map} data={data} />
+                    </div>
+                    <div className="drawer-status-bar">
+                        <StatusBar
+                            data={props.data}
+                            onRefresh={refreshHandler}
+                            lastUpdated={props.lastUpdated}
+                        />
                     </div>
                 </div>
             </div>
