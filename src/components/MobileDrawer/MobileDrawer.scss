@@ -44,6 +44,7 @@
         &__inner {
             height: 300px;
             display: flex;
+            flex-direction: column;
 
             .testing-site-list {
                 background-color: rgb(253, 253, 253);
