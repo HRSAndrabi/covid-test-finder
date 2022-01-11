@@ -81,6 +81,19 @@ function checkOpen(feature) {
     }
 }
 
+function checkWheelchair(feature) {
+    if (
+        feature.properties["SITE_FACILITIES"] &&
+        feature.properties["SITE_FACILITIES"]
+            .toLowerCase()
+            .includes("wheelchair")
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export async function fetchVicData() {
     const output = {
         type: "FeatureCollection",
@@ -121,6 +134,7 @@ export async function fetchVicData() {
                     }
                 });
                 feature.properties["OPEN_STATUS"] = checkOpen(feature);
+                feature.properties["WHEELCHAIR"] = checkWheelchair(feature);
                 if (
                     !uidList.includes(feature.properties["ID"]) &&
                     feature.properties["ADDRESS"] &&

@@ -16,6 +16,7 @@ const MobileDrawer = (props) => {
         "walk-in": false,
         "drive-through": false,
         "all-ages": false,
+        "weelchair-access": false,
     });
     const [searchTerm, setSearchTerm] = useState(null);
 

@@ -1,7 +1,6 @@
 @import "src/App.scss";
 
 .search {
-    width: 100%;
     max-width: 400px;
     margin: 0 auto;
     height: 2rem;
@@ -10,6 +9,7 @@
     border: 1px solid $cp-grey-500;
     border-radius: 100px;
     padding: $s1;
+    margin: 0 $s3;
     background-color: #fff;
 
     &__input {
