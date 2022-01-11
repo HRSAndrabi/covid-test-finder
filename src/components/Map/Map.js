@@ -29,13 +29,13 @@ function Map(props) {
             ],
             attributionControl: false,
         });
-        // map.current.addControl(
-        //     new mapboxgl.AttributionControl({
-        //         customAttribution: "Developed by @hrs_andrabi",
-        //         compact: true,
-        //     }),
-        //     "top-right"
-        // );
+        map.current.addControl(
+            new mapboxgl.AttributionControl({
+                customAttribution: "Developed by @hrs_andrabi",
+                compact: true,
+            }),
+            "top-right"
+        );
         map.current.addControl(
             new mapboxgl.GeolocateControl({
                 positionOptions: {
