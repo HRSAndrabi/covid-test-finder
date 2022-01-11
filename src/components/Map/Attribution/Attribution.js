@@ -1,20 +1,20 @@
 import { ReactComponent as Logo } from "../../../logo.svg";
-import { MdInfoOutline } from "react-icons/md";
-import { Fab } from "@mui/material";
+import { MdInfo } from "react-icons/md";
+// import { Fab } from "@mui/material";
 import "./Attribution.scss";
 
 const Attribution = () => {
     return (
         <div className="attribution">
             <div className="attribution-inner">
-                <Fab
+                <div
                     className="attribution-control"
                     size="small"
                     color="primary"
                 >
                     {/* <Logo className="logo" /> */}
-                    <MdInfoOutline />
-                </Fab>
+                    <MdInfo />
+                </div>
                 <div className="attribution-content">
                     <div className="attribution-content-inner">
                         <div>
