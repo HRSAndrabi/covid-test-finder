@@ -65,6 +65,13 @@ const SiteListItem = (props) => {
                                 size="small"
                             />
                         )}
+                        {!!props.feature.properties["WHEELCHAIR"] && (
+                            <Chip
+                                label="wheelchair access"
+                                color="default"
+                                size="small"
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="list-item__body">
