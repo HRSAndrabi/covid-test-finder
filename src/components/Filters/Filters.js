@@ -112,7 +112,7 @@ const Filters = (props) => {
             <div className="filters__options" onScrollCapture={onFilterScroll}>
                 <Chip
                     label="open now"
-                    color={filter.open ? "primary" : "default"}
+                    color={filter["open now"] ? "primary" : "default"}
                     size="small"
                     onClick={filterChangeHandler}
                 />
