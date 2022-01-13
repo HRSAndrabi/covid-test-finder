@@ -29,6 +29,9 @@
             top: 8px;
             left: calc(50% - 15px);
         }
+        .drawer-search {
+            margin: 0 $s3;
+        }
         .drawer-filters {
             padding: 0 0 0 $s1;
         }
@@ -47,6 +50,7 @@
             flex-direction: column;
 
             .testing-site-list {
+                margin: 0 $s3;
                 background-color: rgb(253, 253, 253);
                 flex: 1 1 auto;
                 min-height: 0px;
