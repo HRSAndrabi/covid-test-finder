@@ -68,7 +68,7 @@ const DesktopSidePanel = (props) => {
                 </div>
                 <div className="drawer-attribution">
                     {" "}
-                    Visualized by{" "}
+                    Visualised by{" "}
                     <a
                         href="https://twitter.com/hrs_andrabi"
                         target="_blank"

@@ -18,7 +18,7 @@ const Attribution = () => {
                 <div className="attribution-content">
                     <div className="attribution-content-inner">
                         <div>
-                            Developed by{" "}
+                            Visualised by{" "}
                             <a
                                 href="https://twitter.com/hrs_andrabi"
                                 target="_blank"
