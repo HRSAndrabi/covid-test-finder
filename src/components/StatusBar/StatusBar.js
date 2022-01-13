@@ -15,7 +15,7 @@ const StatusBar = (props) => {
             const newTimeSinceUpdate = moment.duration(
                 props.lastUpdated.diff(moment())
             );
-            if (moment.duration(newTimeSinceUpdate).asMinutes() < -120) {
+            if (moment.duration(newTimeSinceUpdate).asMinutes() < -10) {
                 console.log("Updating data ...");
                 props.onRefresh();
             }

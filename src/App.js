@@ -71,6 +71,14 @@ function App() {
             setIsDesktop(window.innerWidth > 750);
         });
         setLastUpdated(moment());
+
+        window.addEventListener("focus", () => {
+            const timeSinceUpdate = moment.duration(lastUpdated.diff(moment()));
+            if (moment.duration(timeSinceUpdate).asMinutes() < -10) {
+                console.log(moment.duration(timeSinceUpdate).asMinutes());
+                refreshHandler();
+            }
+        });
     }, []);
 
     return (
