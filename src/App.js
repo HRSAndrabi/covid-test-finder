@@ -68,7 +68,7 @@ function App() {
     useEffect(() => {
         setIsDesktop(window.innerWidth > 850);
         window.addEventListener("resize", () => {
-            setIsDesktop(window.innerWidth > 850);
+            setIsDesktop(window.innerWidth > 750);
         });
         setLastUpdated(moment());
     }, []);
